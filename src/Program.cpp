@@ -46,5 +46,23 @@ namespace glh {
             glLinkProgram(program);
             GL_ERROR_CHECK("program", "linkProgram", "glLinkProgram");
         }
+
+        GLint getAttribLocation(GLuint program, const GLchar* name) {
+            GL_ERROR_CHECK("program", "getAttribLocation", "Prexisting");
+
+            GLint location = glGetAttribLocation(program, name);
+            GL_ERROR_CHECK("program", "getAttribLocation", "glGetAttribLocation");
+
+            return location;
+        }
+
+        GLint getUniformLocation(GLuint program, const GLchar* name) {
+            GL_ERROR_CHECK("program", "getUniformLocation", "Prexisting");
+
+            GLint location = glGetUniformLocation(program, name);
+            GL_ERROR_CHECK("program", "getUniformLocation", "glGetUniformLocation");
+
+            return location;
+        }
     }
 }

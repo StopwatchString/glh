@@ -15,6 +15,9 @@ namespace glh {
         void detachShader(GLuint program, GLuint shader);
 
         void linkProgram(GLuint program);
+
+        GLint getAttribLocation(GLuint program, const GLchar* name);
+        GLint getUniformLocation(GLuint program, const GLchar* name);
     }
 }
 
