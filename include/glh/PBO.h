@@ -1,8 +1,7 @@
 #ifndef GLH_PBO_H
 #define GLH_PBO_H
 
-#define GLEW_STATIC
-#include "GL/glew.h"
+#include "../glad/gl.h"
 
 #define BUFFER_TARGET 0
 namespace glh {

@@ -1,8 +1,7 @@
 #ifndef GLH_TEXTURE_H
 #define GLH_TEXTURE_H
 
-#define GLEW_STATIC
-#include "GL/glew.h"
+#include "../glad/gl.h"
 
 namespace glh {
     namespace texture {

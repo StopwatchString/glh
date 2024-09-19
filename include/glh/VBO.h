@@ -1,8 +1,7 @@
 #ifndef GLH_VBO_H
 #define GLH_VBO_H
 
-#define GLEW_STATIC
-#include "GL/glew.h"
+#include "../glad/gl.h"
 
 namespace glh {
     namespace VBO {
