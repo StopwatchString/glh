@@ -49,35 +49,35 @@ do {                                                                        \
 namespace glh {
     namespace UBO {
         void create(GLuint& UBO) {
-            GL_ERROR_CHECK("UBO", "create", "Prexisting");
+            GL_ERROR_CHECK("UBO", "create", "Pre-existing");
 
             glGenBuffers(1, &UBO);
             GL_ERROR_CHECK("UBO", "create", "glGenBuffers");
         }
 
         void create(GLsizei num, GLuint* UBOArray) {
-            GL_ERROR_CHECK("UBO", "create", "Prexisting");
+            GL_ERROR_CHECK("UBO", "create", "Pre-existing");
 
             glGenBuffers(num, UBOArray);
             GL_ERROR_CHECK("UBO", "create", "glGenBuffers");
         }
 
         void destroy(GLuint& UBO) {
-            GL_ERROR_CHECK("UBO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("UBO", "destroy", "Pre-existing");
 
             glDeleteBuffers(1, &UBO);
             GL_ERROR_CHECK("UBO", "destroy", "glDeleteBuffers");
         }
 
         void destroy(GLsizei num, GLuint* UBOArray) {
-            GL_ERROR_CHECK("UBO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("UBO", "destroy", "Pre-existing");
 
             glDeleteBuffers(num, UBOArray);
             GL_ERROR_CHECK("UBO", "destroy", "glDeleteBuffers");
         }
 
         void bind(GLuint UBO) {
-            GL_ERROR_CHECK("UBO", "bind", "Prexisting");
+            GL_ERROR_CHECK("UBO", "bind", "Pre-existing");
             TRACK_BOUND_UBO(UBO);
 
             glBindBuffer(GL_UNIFORM_BUFFER, UBO);
@@ -85,7 +85,7 @@ namespace glh {
         }
 
         void allocateBuffer(GLsizeiptr size, const void* data, GLenum usage, GLuint expectedBoundUBO) {
-            GL_ERROR_CHECK("UBO", "allocateBuffer", "Prexisting");
+            GL_ERROR_CHECK("UBO", "allocateBuffer", "Pre-existing");
             VERIFY_BOUND_UBO(expectedBoundUBO, "allocateBuffer");
 
             glBufferData(GL_UNIFORM_BUFFER, size, data, usage);
@@ -93,7 +93,7 @@ namespace glh {
         }
 
         void updateBuffer(GLintptr offset, GLsizeiptr size, const void* data, GLuint expectedBoundUBO) {
-            GL_ERROR_CHECK("UBO", "updateBuffer", "Prexisting");
+            GL_ERROR_CHECK("UBO", "updateBuffer", "Pre-existing");
             VERIFY_BOUND_UBO(expectedBoundUBO, "updateBuffer");
 
             glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
@@ -101,7 +101,7 @@ namespace glh {
         }
 
         void bindBufferBase(GLuint bindingPoint, GLuint UBO) {
-            GL_ERROR_CHECK("UBO", "bindBufferBase", "Prexisting");
+            GL_ERROR_CHECK("UBO", "bindBufferBase", "Pre-existing");
 
             glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, UBO);
             GL_ERROR_CHECK("UBO", "bindBufferBase", "glBindBufferBase");

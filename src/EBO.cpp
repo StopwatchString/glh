@@ -49,35 +49,35 @@ do {                                                                            
 namespace glh {
     namespace EBO {
         void create(GLuint& EBO) {
-            GL_ERROR_CHECK("EBO", "create", "Prexisting");
+            GL_ERROR_CHECK("EBO", "create", "Pre-existing");
 
             glGenBuffers(1, &EBO);
             GL_ERROR_CHECK("EBO", "create", "glGenBuffers");
         }
 
         void create(GLsizei num, GLuint* EBOArray) {
-            GL_ERROR_CHECK("EBO", "create", "Prexisting");
+            GL_ERROR_CHECK("EBO", "create", "Pre-existing");
 
             glGenBuffers(num, EBOArray);
             GL_ERROR_CHECK("EBO", "create", "glGenBuffers");
         }
 
         void destroy(GLuint& EBO) {
-            GL_ERROR_CHECK("EBO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("EBO", "destroy", "Pre-existing");
 
             glDeleteBuffers(1, &EBO);
             GL_ERROR_CHECK("EBO", "destroy", "glDeleteBuffers");
         }
 
         void destroy(GLsizei num, GLuint* EBOArray) {
-            GL_ERROR_CHECK("EBO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("EBO", "destroy", "Pre-existing");
 
             glDeleteBuffers(num, EBOArray);
             GL_ERROR_CHECK("EBO", "destroy", "glDeleteBuffers");
         }
 
         void bind(GLuint EBO) {
-            GL_ERROR_CHECK("EBO", "bind", "Prexisting");
+            GL_ERROR_CHECK("EBO", "bind", "Pre-existing");
             TRACK_BOUND_EBO(EBO);
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -85,7 +85,7 @@ namespace glh {
         }
 
         void allocateBuffer(GLsizeiptr size, const void* data, GLenum usage, GLuint expectedBoundEBO) {
-            GL_ERROR_CHECK("EBO", "allocateBuffer", "Prexisting");
+            GL_ERROR_CHECK("EBO", "allocateBuffer", "Pre-existing");
             VERIFY_BOUND_EBO(expectedBoundEBO, "allocateBuffer");
 
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
@@ -93,7 +93,7 @@ namespace glh {
         }
 
         void updateBuffer(GLintptr offset, GLsizeiptr size, const void* data, GLuint expectedBoundEBO) {
-            GL_ERROR_CHECK("EBO", "updateBuffer", "Prexisting");
+            GL_ERROR_CHECK("EBO", "updateBuffer", "Pre-existing");
             VERIFY_BOUND_EBO(expectedBoundEBO, "updateBuffer");
 
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data);

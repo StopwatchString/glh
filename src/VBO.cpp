@@ -49,35 +49,35 @@ do {                                                                            
 namespace glh {
     namespace VBO {
         void create(GLuint& VBO) {
-            GL_ERROR_CHECK("VBO", "create", "Prexisting");
+            GL_ERROR_CHECK("VBO", "create", "Pre-existing");
 
             glGenBuffers(1, &VBO);
             GL_ERROR_CHECK("VBO", "create", "glGenBuffers");
         }
 
         void create(GLsizei num, GLuint* VBOArray) {
-            GL_ERROR_CHECK("VBO", "create", "Prexisting");
+            GL_ERROR_CHECK("VBO", "create", "Pre-existing");
 
             glGenBuffers(num, VBOArray);
             GL_ERROR_CHECK("VBO", "create", "glGenBuffers");
         }
 
         void destroy(GLuint& VBO) {
-            GL_ERROR_CHECK("VBO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("VBO", "destroy", "Pre-existing");
 
             glDeleteBuffers(1, &VBO);
             GL_ERROR_CHECK("VBO", "destroy", "glDeleteBuffers");
         }
 
         void destroy(GLsizei num, GLuint* VBOArray) {
-            GL_ERROR_CHECK("VBO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("VBO", "destroy", "Pre-existing");
 
             glDeleteBuffers(num, VBOArray);
             GL_ERROR_CHECK("VBO", "destroy", "glDeleteBuffers");
         }
 
         void bind(GLuint VBO) {
-            GL_ERROR_CHECK("VBO", "bind", "Prexisting");
+            GL_ERROR_CHECK("VBO", "bind", "Pre-existing");
             TRACK_BOUND_VBO(VBO);
 
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -85,7 +85,7 @@ namespace glh {
         }
 
         void allocateBuffer(GLsizeiptr size, const void* data, GLenum usage, GLuint expectedBoundVBO) {
-            GL_ERROR_CHECK("VBO", "allocateBuffer", "Prexisting");
+            GL_ERROR_CHECK("VBO", "allocateBuffer", "Pre-existing");
             VERIFY_BOUND_VBO(expectedBoundVBO, "allocateBuffer");
 
             glBufferData(GL_ARRAY_BUFFER, size, data, usage);
@@ -93,7 +93,7 @@ namespace glh {
         }
 
         void updateBuffer(GLintptr offset, GLsizeiptr size, const void* data, GLuint expectedBoundVBO) {
-            GL_ERROR_CHECK("VBO", "updateBuffer", "Prexisting");
+            GL_ERROR_CHECK("VBO", "updateBuffer", "Pre-existing");
             VERIFY_BOUND_VBO(expectedBoundVBO, "updateBuffer");
 
             glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);

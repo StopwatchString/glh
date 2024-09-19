@@ -49,35 +49,35 @@ do {                                                                            
 namespace glh {
     namespace VAO {
         void create(GLuint& VAO) {
-            GL_ERROR_CHECK("VAO", "create", "Prexisting");
+            GL_ERROR_CHECK("VAO", "create", "Pre-existing");
 
             glGenVertexArrays(1, &VAO);
             GL_ERROR_CHECK("VAO", "create", "glGenVertexArrays");
         }
 
         void create(GLsizei num, GLuint* VAOArray) {
-            GL_ERROR_CHECK("VAO", "create", "Prexisting");
+            GL_ERROR_CHECK("VAO", "create", "Pre-existing");
 
             glGenVertexArrays(num, VAOArray);
             GL_ERROR_CHECK("VAO", "create", "glGenVertexArrays");
         }
 
         void destroy(GLuint& VAO) {
-            GL_ERROR_CHECK("VAO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("VAO", "destroy", "Pre-existing");
 
             glDeleteVertexArrays(1, &VAO);
             GL_ERROR_CHECK("VAO", "destroy", "glDeleteVertexArrays");
         }
 
         void destroy(GLsizei num, GLuint* VAOArray) {
-            GL_ERROR_CHECK("VAO", "destroy", "Prexisting");
+            GL_ERROR_CHECK("VAO", "destroy", "Pre-existing");
 
             glDeleteVertexArrays(num, VAOArray);
             GL_ERROR_CHECK("VAO", "destroy", "glDeleteVertexArrays");
         }
 
         void bind(GLuint VAO) {
-            GL_ERROR_CHECK("VAO", "bind", "Prexisting");
+            GL_ERROR_CHECK("VAO", "bind", "Pre-existing");
             TRACK_BOUND_VAO(VAO);
 
             glBindVertexArray(VAO);
@@ -85,7 +85,7 @@ namespace glh {
         }
 
         void enableVertexAttribArray(GLuint index, GLuint expectedBoundVAO) {
-            GL_ERROR_CHECK("VAO", "enableVertexAttribArray", "Prexisting");
+            GL_ERROR_CHECK("VAO", "enableVertexAttribArray", "Pre-existing");
             VERIFY_BOUND_VAO(expectedBoundVAO, "enableVertexAttribArray");
 
             glEnableVertexAttribArray(index);
@@ -93,7 +93,7 @@ namespace glh {
         }
 
         void disableVertexAttribArray(GLuint index, GLuint expectedBoundVAO) {
-            GL_ERROR_CHECK("VAO", "disableVertexAttribArray", "Prexisting");
+            GL_ERROR_CHECK("VAO", "disableVertexAttribArray", "Pre-existing");
             VERIFY_BOUND_VAO(expectedBoundVAO, "disableVertexAttribArray");
 
             glDisableVertexAttribArray(index);
@@ -101,7 +101,7 @@ namespace glh {
         }
 
         void vertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer, GLuint expectedBoundVAO) {
-            GL_ERROR_CHECK("VAO", "vertexAttribPointer", "Prexisting");
+            GL_ERROR_CHECK("VAO", "vertexAttribPointer", "Pre-existing");
             VERIFY_BOUND_VAO(expectedBoundVAO, "vertexAttribPointer");
 
             glVertexAttribPointer(index, size, type, normalized, stride, pointer);
