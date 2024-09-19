@@ -1,4 +1,5 @@
 #include "glh/Utils.h"
+#include "glh/macros.h"
 
 #include <fstream>
 #include <vector>
@@ -26,6 +27,10 @@ namespace glh {
             std::copy(buffer.begin(), buffer.end(), result);
 
             return result;
+        }
+
+        void glErrorCheck(const std::string& identifier) {
+            GL_ERROR_CHECK("utils", "glErrorCheck", identifier);
         }
     }
 }
