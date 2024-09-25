@@ -32,5 +32,18 @@ namespace glh {
         void glErrorCheck(const std::string& identifier) {
             GL_ERROR_CHECK("utils", "glErrorCheck", identifier);
         }
+
+        bool loadExtensions(GLHloadfunc load) {
+            return gladLoadGL((GLADloadfunc) load);
+        }
+
+#ifdef _WIN32
+        bool loadPlatformExtensions(HDC hdc, GLHloadfunc load) {
+            return gladLoadWGL(hdc, (GLADloadfunc) load);
+        }
+#elif defined(__linux__)
+        //TODO LINUX IMPL
+#endif
+
     }
 }
