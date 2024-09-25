@@ -1,6 +1,8 @@
 #ifndef GLH_H
 #define GLH_H
 
+#include "../glad/gl.h"
+
 #include "./Shader.h"
 #include "./Program.h"
 #include "./Texture.h"
