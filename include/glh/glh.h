@@ -3,6 +3,12 @@
 
 #include "../glad/gl.h"
 
+#ifdef _WIN32
+#include "../glad/wgl.h"
+#elif defined(__linux__)
+#include "../glad/glx.h"
+#endif
+
 #include "./Shader.h"
 #include "./Program.h"
 #include "./Texture.h"
