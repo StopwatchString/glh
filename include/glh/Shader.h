@@ -3,6 +3,8 @@
 
 #include "../glad/gl.h"
 
+#include <string>
+
 namespace glh {
     namespace shader {
         // Valid Shader Types:
@@ -21,6 +23,8 @@ namespace glh {
         void compileShader(GLuint shader);
 
         bool isCompiled(GLuint shader);
+
+        const std::string getShaderInfoLog(GLuint shader);
     }
 }
 

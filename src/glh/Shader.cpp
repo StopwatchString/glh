@@ -2,6 +2,7 @@
 #include "glh/macros.h"
 
 #include <iostream>
+#include <array>
 
 namespace glh {
     namespace shader {
@@ -43,6 +44,17 @@ namespace glh {
             GL_ERROR_CHECK("shader", "isCompiled", "glGetShaderiv");
 
             return status == GL_TRUE;
+        }
+
+        const std::string getShaderInfoLog(GLuint shader) {
+            GL_ERROR_CHECK("shader", "getShaderInfoLog", "Pre-existing");
+
+            std::array<char, 1024> infoLog;
+            GLsizei length = 0;
+            glGetShaderInfoLog(shader, 1024, &length, infoLog.data());
+            GL_ERROR_CHECK("shader", "getShaderInfoLog", "glGetShaderInfoLog");
+
+            return std::string(infoLog.data());
         }
     }
 }
