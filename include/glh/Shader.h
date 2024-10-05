@@ -19,11 +19,8 @@ namespace glh {
         void destroy(GLuint shader);
 
         void attachSource(GLuint shader, GLsizei count, const GLchar** string, const GLint* length);
-
         void compileShader(GLuint shader);
-
         bool isCompiled(GLuint shader);
-
         const std::string getShaderInfoLog(GLuint shader);
     }
 }

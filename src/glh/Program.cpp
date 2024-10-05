@@ -1,6 +1,8 @@
 #include "glh/Program.h"
 #include "glh/macros.h"
 
+#include <array>
+
 namespace glh {
     namespace program {
         GLuint create() {
@@ -45,6 +47,29 @@ namespace glh {
 
             glLinkProgram(program);
             GL_ERROR_CHECK("program", "linkProgram", "glLinkProgram");
+        }
+
+        bool isLinked(GLuint program)
+        {
+            GL_ERROR_CHECK("program", "isLinked", "Pre-existing");
+
+            GLint status;
+            glGetProgramiv(program, GL_LINK_STATUS, &status);
+            GL_ERROR_CHECK("program", "isLinked", "glGetShaderiv");
+
+            return status == GL_TRUE;
+        }
+
+        const std::string getProgramInfoLog(GLuint program)
+        {
+            GL_ERROR_CHECK("program", "getProgramInfoLog", "Pre-existing");
+
+            std::array<char, 1024> infoLog;
+            GLsizei length = 0;
+            glGetShaderInfoLog(program, 1024, &length, infoLog.data());
+            GL_ERROR_CHECK("program", "getProgramInfoLog", "glGetShaderInfoLog");
+
+            return std::string(infoLog.data());
         }
 
         GLint getAttribLocation(GLuint program, const GLchar* name) {

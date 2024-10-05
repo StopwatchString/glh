@@ -3,6 +3,8 @@
 
 #include "../glad/gl.h"
 
+#include <string>
+
 namespace glh {
     namespace program {
         GLuint create();
@@ -15,9 +17,12 @@ namespace glh {
         void detachShader(GLuint program, GLuint shader);
 
         void linkProgram(GLuint program);
+        bool isLinked(GLuint program);
+        const std::string getProgramInfoLog(GLuint program);
 
         GLint getAttribLocation(GLuint program, const GLchar* name);
         GLint getUniformLocation(GLuint program, const GLchar* name);
+
     }
 }
 
