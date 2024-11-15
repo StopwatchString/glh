@@ -5,6 +5,30 @@
 #include "glh/macros.h"
 
 // Framebuffers
+static void glhGenFramebuffers(GLsizei n, GLuint* framebuffers) {
+    GL_ERROR_CHECK("Begin glGenFramebuffers()");
+    glGenFramebuffers(n, framebuffers);
+    GL_ERROR_CHECK("glGenFramebuffers()");
+}
+
+static void glhBindFramebuffer(GLenum target, GLuint framebuffer) {
+    GL_ERROR_CHECK("Before glBindFramebuffer()");
+    glBindFramebuffer(target, framebuffer);
+    GL_ERROR_CHECK("glBindFramebuffer()");
+}
+
+static void glhFramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level) {
+    GL_ERROR_CHECK("Before glFramebufferTexture2D()");
+    glFramebufferTexture2D(target, attachment, textarget, texture, level);
+    GL_ERROR_CHECK("glFramebufferTexture2D()");
+}
+
+static GLenum glhCheckFramebufferStatus(GLenum target) {
+    GL_ERROR_CHECK("Before glCheckFramebufferStatus()");
+    GLenum status = glCheckFramebufferStatus(target);
+    GL_ERROR_CHECK("glCheckFramebufferStatus()");
+    return status;
+}
 
 // Textures
 static void glhGenTextures(GLsizei num, GLuint* textures) {
@@ -52,15 +76,37 @@ static void glhTextureParameteri(GLuint texture, GLenum pname, GLint param) {
 
 // Clearing
 static void glhClear(GLenum clearTarget) {
-    GL_ERROR_CHECK("Before glClear");
+    GL_ERROR_CHECK("Before glClear()");
     glClear(clearTarget);
-    GL_ERROR_CHECK("After glClear");
+    GL_ERROR_CHECK("glClear()");
 }
 
 static void glhClearColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
-    GL_ERROR_CHECK("Before glClearColor");
+    GL_ERROR_CHECK("Before glClearColor()");
     glClearColor(r, g, b, a);
-    GL_ERROR_CHECK("After glClearColor");
+    GL_ERROR_CHECK("glClearColor()");
+}
+
+// Fixed Function Procedures
+// NOTE: Cannot execute glGetError() while between glBegin() and glEnd()
+static void glhBegin(GLenum mode) {
+    GL_ERROR_CHECK("Before glBegin()");
+    glBegin(mode);
+    //  Can't execute glGetError() after starting
+}
+
+static void glhEnd() {
+    // Can't execute glGetError() before ending
+    glEnd();
+    GL_ERROR_CHECK("glEnd()");
+}
+
+static void glhTexCoord2f(GLfloat s, GLfloat t) {
+    glTexCoord2f(s, t);
+}
+
+static void glhVertex2f(GLfloat x, GLfloat y) {
+    glVertex2f(x, y);
 }
 
 #endif

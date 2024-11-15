@@ -12,6 +12,7 @@
 #include "glh/functionWrappers.h"
 #include "glh/utils.h"
 #include "glh/Texture2D.h"
+#include "glh/D3DInteropTexture2D.h"
 
 //-----------------------------------------------
 // glhLoadExtensions()
