@@ -27,9 +27,9 @@ static void glhBindTexture(GLenum target, GLuint texture)
 }
 
 static void glhTextureStorage2D(GLuint texture, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height) {
-    GL_ERROR_CHECK("Before glTextureStorage()");
+    GL_ERROR_CHECK("Before glTextureStorage2D()");
     glTextureStorage2D(texture, levels, internalFormat, width, height);
-    GL_ERROR_CHECK("glTextureStorage()");
+    GL_ERROR_CHECK("glTextureStorage2D()");
 }
 
 static void glhGenerateTextureMipmap(GLuint texture) {

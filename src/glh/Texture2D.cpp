@@ -9,7 +9,12 @@ Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool 
       m_Height(height),
       m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(std::max(width, height))) : 1)
 {
+    // Create and bind so that the texture is associated as a 2D texture
     glhGenTextures(1, &m_TextureName);
+    bind();
+    unbind();
+
+    // Allocate storage
     glhTextureStorage2D(m_TextureName, m_Levels, m_InternalFormat, m_Width, m_Height);
 
     // Set default parameters
