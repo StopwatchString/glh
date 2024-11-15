@@ -12,8 +12,8 @@ public:
     Texture2D(const Texture2D& other) = delete;
     Texture2D& operator=(const Texture2D& other) = delete;
 
-    Texture2D(Texture2D&& other) noexcept = delete;
-    Texture2D& operator=(Texture2D&& other) noexcept = delete;
+    Texture2D(Texture2D&& other) noexcept;
+    Texture2D& operator=(Texture2D&& other) noexcept;
 
     // Binds the texture on GL_TEXTURE_2D
     void bind() const;

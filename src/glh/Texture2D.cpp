@@ -1,7 +1,7 @@
 #include "glh/Texture2D.h"
 
 //-----------------------------------------------
-// Constructor
+// Parameterized Constructor
 //-----------------------------------------------
 Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool useMipmaps)
     : m_InternalFormat(internalFormat),
@@ -24,6 +24,56 @@ Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool 
 
     setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
     setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
+//-----------------------------------------------
+// Move Constructor
+//-----------------------------------------------
+Texture2D::Texture2D(Texture2D&& other) noexcept
+    : m_TextureName(other.m_TextureName),
+      m_HasData(other.m_HasData),
+      m_InternalFormat(other.m_InternalFormat),
+      m_Width(other.m_Width),
+      m_Height(other.m_Height),
+      m_Levels(other.m_Levels)
+{
+    // Clear their data
+    other.m_TextureName = 0;
+    other.m_HasData = false;
+    other.m_InternalFormat = GL_NONE;
+    other.m_Width = 0;
+    other.m_Height = 0;
+    other.m_Levels = 0;
+}
+
+//-----------------------------------------------
+// Move Assignment
+//-----------------------------------------------
+Texture2D& Texture2D::operator=(Texture2D&& other) noexcept
+{
+    if (this != &other) {
+        // Free current resources
+        if (m_TextureName != 0) {
+            glhDeleteTextures(1, &m_TextureName);
+        }
+
+        // Move ownership
+        m_TextureName = other.m_TextureName;
+        m_HasData = other.m_HasData;
+        m_InternalFormat = other.m_InternalFormat;
+        m_Width = other.m_Width;
+        m_Height = other.m_Height;
+        m_Levels = other.m_Levels;
+
+        // Clear their data
+        other.m_TextureName = 0;
+        other.m_HasData = false;
+        other.m_InternalFormat = GL_NONE;
+        other.m_Width = 0;
+        other.m_Height = 0;
+        other.m_Levels = 0;
+    }
+    return *this;
 }
 
 //-----------------------------------------------
