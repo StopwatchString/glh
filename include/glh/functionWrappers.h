@@ -30,6 +30,13 @@ static GLenum glhCheckFramebufferStatus(GLenum target) {
     return status;
 }
 
+static GLenum glhCheckNamedFramebufferStatus(GLuint framebuffer, GLenum target) {
+    GL_ERROR_CHECK("Before glCheckNamedFramebufferStatus()");
+    GLenum status = glCheckNamedFramebufferStatus(framebuffer, target);
+    GL_ERROR_CHECK("glCheckNamedFramebufferStatus()");
+    return status;
+}
+
 // Textures
 static void glhGenTextures(GLsizei num, GLuint* textures) {
     GL_ERROR_CHECK("Before glGenTextures()");

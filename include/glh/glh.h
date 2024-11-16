@@ -16,6 +16,7 @@
 // Classes
 #include "glh/classes/Texture2D.h"
 #include "glh/classes/D3DInteropTexture2D.h"
+#include "glh/classes/Framebuffer.h"
 
 //-----------------------------------------------
 // glhLoadExtensions()
