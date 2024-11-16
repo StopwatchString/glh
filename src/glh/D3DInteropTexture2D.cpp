@@ -1,5 +1,7 @@
 #include "glh/D3DInteropTexture2D.h"
 
+#include "glh/SharedLibraryLoader.h"
+
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -109,15 +111,15 @@ void D3DInteropTexture2D::interopUnlock()
 //-----------------------------------------------
 void D3DInteropTexture2D::initDirect3D()
 {
-    // Load the D3D library
-    HMODULE hD3D11Lib = LoadLibraryA("d3d11.dll");
-    if (hD3D11Lib == NULL) {
+    // Load D3D Library
+    SharedLibraryLoader d3d11dll{ "d3d11.dll" };
+    if (!d3d11dll.valid()) {
         std::cerr << "ERROR initDirect3D() Unable to load d3d11.dll" << std::endl;
         exit(EXIT_FAILURE);
     }
 
     // Get the function pointer for D3D11CreateDevice from the loaded D3D library
-    PFN_D3D11_CREATE_DEVICE D3D11CreateDevicePtr = (PFN_D3D11_CREATE_DEVICE)GetProcAddress(hD3D11Lib, "D3D11CreateDevice");
+    PFN_D3D11_CREATE_DEVICE D3D11CreateDevicePtr = (PFN_D3D11_CREATE_DEVICE)d3d11dll.loadFunctionPointer("D3D11CreateDevice");
     if (D3D11CreateDevicePtr == NULL) {
         std::cerr << "ERROR initDirect3D() Could not GetProcAddress of D3D11CreateDevice" << std::endl;
         exit(EXIT_FAILURE);
