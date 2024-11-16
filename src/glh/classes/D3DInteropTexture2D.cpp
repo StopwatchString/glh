@@ -1,6 +1,6 @@
-#include "glh/D3DInteropTexture2D.h"
+#include "glh/classes/D3DInteropTexture2D.h"
 
-#include "glh/SharedLibraryLoader.h"
+#include "glh/classes/SharedLibraryLoader.h"
 
 #include <iostream>
 #include <vector>

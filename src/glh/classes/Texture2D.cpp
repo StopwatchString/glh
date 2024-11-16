@@ -1,4 +1,4 @@
-#include "glh/Texture2D.h"
+#include "glh/classes/Texture2D.h"
 
 //-----------------------------------------------
 // Parameterized Constructor

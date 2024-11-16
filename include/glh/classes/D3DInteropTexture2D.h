@@ -69,15 +69,12 @@ private:
     static void initDirect3D();
     static bool direct3DIsInit() { return d3dDevice1 != NULL && d3dDeviceContext1 != NULL && hWglD3DDevice != NULL; }
 
-
     // Texture handles
     GLuint m_OpenGLTextureName{ 0 };
     ID3D11Texture2D* m_D3DTexture{ nullptr };
     HANDLE hSharedTexture{ NULL };
     HANDLE hSharedTextureLock{ NULL };
     void createSharedTexture();
-
-
 };
 
 #endif
