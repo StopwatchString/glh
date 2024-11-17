@@ -93,12 +93,12 @@ void glhFreeFont()
 //-----------------------------------------------
 // glhDrawText()
 //-----------------------------------------------
-void glhDrawText(const std::string& text, float x, float y, float spacing)
+void glhDrawText(const std::string& text, float x, float y, float size, float spacing)
 {
     pushOpenGLState();
 
     if (font != nullptr) {
-        RFont_draw_text_spacing(font, text.c_str(), x, y, text.size(), spacing);
+        RFont_draw_text_spacing(font, text.c_str(), x, y, size, spacing);
     }
 
     popOpenGLState();
