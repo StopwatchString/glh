@@ -93,15 +93,21 @@ void glhFreeFont()
 //-----------------------------------------------
 // glhDrawText()
 //-----------------------------------------------
-void glhDrawText(const std::string& text, float x, float y, float size, float spacing)
+FontRect glhDrawText(const std::string& text, float x, float y, float size, float spacing)
 {
+    FontRect fontRect{};
+
     pushOpenGLState();
 
     if (font != nullptr) {
-        RFont_draw_text_spacing(font, text.c_str(), x, y, size, spacing);
+        RFont_area area = RFont_draw_text_spacing(font, text.c_str(), x, y, size, spacing);
+        fontRect.width = area.w;
+        fontRect.height = area.h;
     }
 
     popOpenGLState();
+
+    return fontRect;
 }
 
 //-----------------------------------------------
@@ -120,4 +126,18 @@ void glhSetTextColor(float r, float g, float b, float a)
 void glhUpdateFontFramebuffer(size_t width, size_t height)
 {
     RFont_update_framebuffer(width, height);
+}
+
+//-----------------------------------------------
+// glhGetTextSize()
+//-----------------------------------------------
+FontRect glhGetTextSize(const std::string& text, float size)
+{
+    FontRect fontRect{};
+    if (font != nullptr) {
+        RFont_area area = RFont_text_area(font, text.c_str(), size);
+        fontRect.width = area.w;
+        fontRect.height = area.h;
+    }
+    return fontRect;
 }
