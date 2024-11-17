@@ -114,6 +114,42 @@ static void glhClearColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
 }
 
 // Shaders
+static GLuint glhCreateShader(GLenum type) {
+    GL_ERROR_CHECK("Before glCreateShader()");
+    GLuint shader = glCreateShader(type);
+    GL_ERROR_CHECK("glCreateShader()");
+    return shader;
+}
+
+static void glhDeleteShader(GLuint shader) {
+    GL_ERROR_CHECK("Before glDeleteShader()");
+    glDeleteShader(shader);
+    GL_ERROR_CHECK("glDeleteShader()");
+}
+
+static void glhShaderSource(GLuint shader, GLsizei count, const GLchar* const* string, const GLint* length) {
+    GL_ERROR_CHECK("Before glShaderSource()");
+    glShaderSource(shader, count, string, length);
+    GL_ERROR_CHECK("glShaderSource()");
+}
+
+static void glhCompileShader(GLuint shader) {
+    GL_ERROR_CHECK("Before glCompileShader()");
+    glCompileShader(shader);
+    GL_ERROR_CHECK("glCompileShader()");
+}
+
+static void glhGetShaderiv(GLenum shader, GLenum pname, GLint* params) {
+    GL_ERROR_CHECK("Before glGetShaderiv()");
+    glGetShaderiv(shader, pname, params);
+    GL_ERROR_CHECK("glGetShaderiv()");
+}
+
+static void glhGetShaderInfoLog(GLenum shader, GLsizei bufsize, GLsizei* length, GLchar* infoLog) {
+    GL_ERROR_CHECK("Before glGetShaderInfoLog()");
+    glGetShaderInfoLog(shader, bufsize, length, infoLog);
+    GL_ERROR_CHECK("glGetShaderInfoLog()");
+}
 
 // Program
 static void glhUseProgram(GLuint program) {
