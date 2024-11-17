@@ -1,7 +1,7 @@
 #ifndef GLH_UTILS_H
 #define GLH_UTILS_H
 
-#include "glad/gl.h"
+#include "glh/openglapi.h"
 
 #include <iostream>
 #include <fstream>
