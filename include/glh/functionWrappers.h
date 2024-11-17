@@ -37,6 +37,20 @@ static GLenum glhCheckNamedFramebufferStatus(GLuint framebuffer, GLenum target) 
     return status;
 }
 
+// Vertex Array Object
+static void glhBindVertexArray(GLuint array) {
+    GL_ERROR_CHECK("Before glBindVertexArray()");
+    glBindVertexArray(array);
+    GL_ERROR_CHECK("glBindVertexArray()");
+}
+
+// Buffer Objects
+static void glhBindBuffer(GLenum target, GLuint buffer) {
+    GL_ERROR_CHECK("Before glBindBuffer()");
+    glBindBuffer(target, buffer);
+    GL_ERROR_CHECK("glBindBuffer()");
+}
+
 // Textures
 static void glhGenTextures(GLsizei num, GLuint* textures) {
     GL_ERROR_CHECK("Before glGenTextures()");
@@ -50,8 +64,7 @@ static void glhDeleteTextures(GLsizei num, GLuint* textures) {
     GL_ERROR_CHECK("glDeleteTextures()");
 }
 
-static void glhBindTexture(GLenum target, GLuint texture)
-{
+static void glhBindTexture(GLenum target, GLuint texture) {
     GL_ERROR_CHECK("Before glBindTexture()");
     glBindTexture(target, texture);
     GL_ERROR_CHECK("glBindTexture()");
@@ -81,6 +94,12 @@ static void glhTextureParameteri(GLuint texture, GLenum pname, GLint param) {
     GL_ERROR_CHECK("glTextureParameteri()");
 }
 
+static void glhActiveTexture(GLenum texture) {
+    GL_ERROR_CHECK("Before glActiveTexture()");
+    glActiveTexture(texture);
+    GL_ERROR_CHECK("glActiveTexture()");
+}
+
 // Clearing
 static void glhClear(GLenum clearTarget) {
     GL_ERROR_CHECK("Before glClear()");
@@ -92,6 +111,22 @@ static void glhClearColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
     GL_ERROR_CHECK("Before glClearColor()");
     glClearColor(r, g, b, a);
     GL_ERROR_CHECK("glClearColor()");
+}
+
+// Shaders
+
+// Program
+static void glhUseProgram(GLuint program) {
+    GL_ERROR_CHECK("Before glUseProgram()");
+    glUseProgram(program);
+    GL_ERROR_CHECK("glUseProgram()");
+}
+
+// Blending
+static void glhBlendFunc(GLenum sfactor, GLenum dfactor) {
+    GL_ERROR_CHECK("Before glBlendFunc()");
+    glBlendFunc(sfactor, dfactor);
+    GL_ERROR_CHECK("glBlendFunc()");
 }
 
 // Fixed Function Procedures
@@ -116,16 +151,20 @@ static void glhVertex2f(GLfloat x, GLfloat y) {
     glVertex2f(x, y);
 }
 
+static void glhShadeModel(GLenum model) {
+    GL_ERROR_CHECK("Before glShadeModel()");
+    glShadeModel(model);
+    GL_ERROR_CHECK("glShadeModel()");
+}
+
 // State Setters
-static void glhEnable(GLenum cap)
-{
+static void glhEnable(GLenum cap) {
     GL_ERROR_CHECK("Before glEnable()");
     glEnable(cap);
     GL_ERROR_CHECK("glEnable()");
 }
 
-static void glhDisable(GLenum cap)
-{
+static void glhDisable(GLenum cap) {
     GL_ERROR_CHECK("Befor glDisable()");
     glDisable(cap);
     GL_ERROR_CHECK("glDisable()");
@@ -139,8 +178,7 @@ static bool glhIsEnabled(GLenum cap) {
     return enabled;
 }
 
-static void glhGetIntegerv(GLenum pname, GLint* data)
-{
+static void glhGetIntegerv(GLenum pname, GLint* data) {
     GL_ERROR_CHECK("Before glGetIntegerv()");
     glGetIntegerv(pname, data);
     GL_ERROR_CHECK("glGetIntegerv()");

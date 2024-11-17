@@ -50,18 +50,18 @@ void pushOpenGLState()
 //-----------------------------------------------
 void popOpenGLState()
 {
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glActiveTexture(activeTextureUnit);
+    glhBindVertexArray(vao);
+    glhBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glhBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glhActiveTexture(activeTextureUnit);
     glhBindTexture(GL_TEXTURE_2D, boundTexture2D);
     texture2DEnabled ? glhEnable(GL_TEXTURE_2D) : glhDisable(GL_TEXTURE_2D);
     depthTestEnabled ? glhEnable(GL_DEPTH_TEST) : glhDisable(GL_DEPTH_TEST);
     cullFaceEnabled ? glhEnable(GL_CULL_FACE) : glhDisable(GL_CULL_FACE);
     blendEnabled ? glhEnable(GL_BLEND) : glhDisable(GL_BLEND);
-    glBlendFunc(blendSrcFactor, blendDstFactor);
-    glShadeModel(shadeModel);
-    glUseProgram(program);
+    glhBlendFunc(blendSrcFactor, blendDstFactor);
+    glhShadeModel(shadeModel);
+    glhUseProgram(program);
 }
 
 //-----------------------------------------------
