@@ -1,13 +1,7 @@
 #ifndef GLH_H
 #define GLH_H
 
-#include "glad/gl.h"
-
-#ifdef _WIN32
-#include "glad/wgl.h"
-#elif defined(__linux__)
-#include "glad/glx.h"
-#endif
+#include "openglapi.h"
 
 // Top level
 #include "glh/functionWrappers.h"

@@ -1,7 +1,7 @@
 #ifndef GLH_DEBUG_WRAPPERS_H
 #define GLH_DEBUG_WRAPPERS_H
 
-#include "glad/gl.h"
+#include "glh/openglapi.h"
 #include "glh/macros.h"
 
 // Framebuffers
@@ -114,6 +114,36 @@ static void glhTexCoord2f(GLfloat s, GLfloat t) {
 
 static void glhVertex2f(GLfloat x, GLfloat y) {
     glVertex2f(x, y);
+}
+
+// State Setters
+static void glhEnable(GLenum cap)
+{
+    GL_ERROR_CHECK("Before glEnable()");
+    glEnable(cap);
+    GL_ERROR_CHECK("glEnable()");
+}
+
+static void glhDisable(GLenum cap)
+{
+    GL_ERROR_CHECK("Befor glDisable()");
+    glDisable(cap);
+    GL_ERROR_CHECK("glDisable()");
+}
+
+// State Getters
+static bool glhIsEnabled(GLenum cap) {
+    GL_ERROR_CHECK("Before glIsEnabled()");
+    bool enabled = glIsEnabled(cap);
+    GL_ERROR_CHECK("glIsEnabled()");
+    return enabled;
+}
+
+static void glhGetIntegerv(GLenum pname, GLint* data)
+{
+    GL_ERROR_CHECK("Before glGetIntegerv()");
+    glGetIntegerv(pname, data);
+    GL_ERROR_CHECK("glGetIntegerv()");
 }
 
 #endif

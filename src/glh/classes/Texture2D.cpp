@@ -1,5 +1,7 @@
 #include "glh/classes/Texture2D.h"
 
+#include <algorithm>
+#include <cmath>
 //-----------------------------------------------
 // Parameterized Constructor
 //-----------------------------------------------
@@ -7,7 +9,7 @@ Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool 
     : m_InternalFormat(internalFormat),
       m_Width(width),
       m_Height(height),
-      m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(std::max(width, height))) : 1)
+      m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(max(width, height))) : 1)
 {
     // Create and bind so that the texture is associated as a 2D texture
     glhGenTextures(1, &m_TextureName);
