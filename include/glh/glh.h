@@ -12,6 +12,7 @@
 // Top level
 #include "glh/functionWrappers.h"
 #include "glh/utils.h"
+#include "glh/font.h"
 
 // Classes
 #include "glh/classes/Texture2D.h"
