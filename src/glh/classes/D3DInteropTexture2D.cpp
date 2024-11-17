@@ -6,8 +6,8 @@
 #include <vector>
 #include <cmath>
 
-Microsoft::WRL::ComPtr<ID3D11Device1> D3DInteropTexture2D::d3dDevice1 = NULL;
-Microsoft::WRL::ComPtr<ID3D11DeviceContext1> D3DInteropTexture2D::d3dDeviceContext1 = NULL;
+Microsoft::WRL::ComPtr<ID3D11Device1> D3DInteropTexture2D::d3dDevice1 = nullptr;
+Microsoft::WRL::ComPtr<ID3D11DeviceContext1> D3DInteropTexture2D::d3dDeviceContext1 = nullptr;
 HANDLE D3DInteropTexture2D::hWglD3DDevice = NULL;
 
 //-----------------------------------------------
@@ -34,7 +34,9 @@ D3DInteropTexture2D::D3DInteropTexture2D(GLsizei width, GLsizei height, bool use
 D3DInteropTexture2D::~D3DInteropTexture2D()
 {
     // TODO
-    interopUnlock();
+    if (hWglD3DDevice != NULL) {
+        interopUnlock();
+    }
 }
 
 //-----------------------------------------------
@@ -112,7 +114,7 @@ void D3DInteropTexture2D::interopUnlock()
 void D3DInteropTexture2D::initDirect3D()
 {
     // Load D3D Library
-    SharedLibraryLoader d3d11dll{ "d3d11.dll" };
+    static SharedLibraryLoader d3d11dll{ "d3d11.dll" };
     if (!d3d11dll.valid()) {
         std::cerr << "ERROR initDirect3D() Unable to load d3d11.dll" << std::endl;
         exit(EXIT_FAILURE);
@@ -174,6 +176,27 @@ void D3DInteropTexture2D::initDirect3D()
     if (hWglD3DDevice == NULL) {
         std::cerr << "ERROR initDirect3D() wglDXOpenDeviceNV failed!" << std::endl;
         exit(EXIT_FAILURE);
+    }
+}
+
+//-----------------------------------------------
+// shutdownDirect3D()
+//-----------------------------------------------
+void D3DInteropTexture2D::shutdownDirect3D()
+{
+    if (hWglD3DDevice != NULL) {
+        wglDXCloseDeviceNV(hWglD3DDevice);
+        hWglD3DDevice = NULL;
+    }
+
+    if (d3dDeviceContext1 != nullptr) {
+        d3dDeviceContext1->Release();
+        d3dDeviceContext1 = nullptr;
+    }
+
+    if (d3dDevice1 != nullptr) {
+        d3dDevice1->Release();
+        d3dDevice1 = nullptr;
     }
 }
 

@@ -55,6 +55,9 @@ public:
     // Unlocks the Graphics API interop lock
     void interopUnlock();
 
+    static bool direct3DIsInit() { return d3dDevice1 != NULL && d3dDeviceContext1 != NULL && hWglD3DDevice != NULL; }
+    static void initDirect3D();
+    static void shutdownDirect3D();
 private:
     bool m_HasData{ false };
     GLenum m_InternalFormat{ GL_NONE };
@@ -66,8 +69,6 @@ private:
     static Microsoft::WRL::ComPtr<ID3D11Device1> d3dDevice1;
     static Microsoft::WRL::ComPtr<ID3D11DeviceContext1> d3dDeviceContext1;
     static HANDLE hWglD3DDevice;
-    static void initDirect3D();
-    static bool direct3DIsInit() { return d3dDevice1 != NULL && d3dDeviceContext1 != NULL && hWglD3DDevice != NULL; }
 
     // Texture handles
     GLuint m_OpenGLTextureName{ 0 };
