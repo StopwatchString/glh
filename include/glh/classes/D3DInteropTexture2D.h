@@ -33,7 +33,10 @@ public:
     void setParameter(GLenum parameterName, GLint parameter);
 
     // Get direct OpenGL texture handle
-    GLuint handle() const { return m_OpenGLTextureName; }
+    GLuint openGLHandle() const { return m_OpenGLTextureName; }
+    ID3D11Texture2D* d3dTexturePointer() const { return m_D3DTexture; }
+    HANDLE d3dTextureSharedResourceHandle() const { return m_hDxTextureSharedResource; }
+    HANDLE wglSharedTextureLockHandle() const { return m_hWglSharedTextureLock; }
     // Returns true if texture handle != 0
     bool isValid() const { return m_OpenGLTextureName != 0; }
     // Returns true if data has been uploaded into texture
@@ -73,8 +76,8 @@ private:
     // Texture handles
     GLuint m_OpenGLTextureName{ 0 };
     ID3D11Texture2D* m_D3DTexture{ nullptr };
-    HANDLE hSharedTexture{ NULL };
-    HANDLE hSharedTextureLock{ NULL };
+    HANDLE m_hDxTextureSharedResource{ NULL };
+    HANDLE m_hWglSharedTextureLock{ NULL };
     void createSharedTexture();
 };
 

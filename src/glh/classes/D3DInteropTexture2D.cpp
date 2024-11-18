@@ -97,7 +97,7 @@ void D3DInteropTexture2D::setParameter(GLenum parameterName, GLint parameter)
 //-----------------------------------------------
 void D3DInteropTexture2D::interopLock()
 {
-    wglDXLockObjectsNV(hWglD3DDevice, 1, &hSharedTextureLock);
+    wglDXLockObjectsNV(hWglD3DDevice, 1, &m_hWglSharedTextureLock);
 }
 
 //-----------------------------------------------
@@ -105,7 +105,7 @@ void D3DInteropTexture2D::interopLock()
 //-----------------------------------------------
 void D3DInteropTexture2D::interopUnlock()
 {
-    wglDXUnlockObjectsNV(hWglD3DDevice, 1, &hSharedTextureLock);
+    wglDXUnlockObjectsNV(hWglD3DDevice, 1, &m_hWglSharedTextureLock);
 }
 
 //-----------------------------------------------
@@ -269,7 +269,7 @@ void D3DInteropTexture2D::createSharedTexture()
         NULL,                                                    // pAttributes | Security Attributes
         DXGI_SHARED_RESOURCE_READ | DXGI_SHARED_RESOURCE_WRITE,  // dwAccess    | Requested access rights
         NULL,                                                    // lpName      | Name of resource to share
-        &hSharedTexture                                          // pHandle     | 
+        &m_hDxTextureSharedResource                                          // pHandle     | 
     );
     if (hr != S_OK) {
         std::cerr << "ERROR createSharedTexture() CreateTexture2D() failed!" << std::endl;
@@ -280,7 +280,7 @@ void D3DInteropTexture2D::createSharedTexture()
     pResource->Release();
 
     // Associate the D3DTexture with the generated resource handle
-    if (!wglDXSetResourceShareHandleNV(m_D3DTexture, hSharedTexture)) {
+    if (!wglDXSetResourceShareHandleNV(m_D3DTexture, m_hDxTextureSharedResource)) {
         std::cerr << "ERROR createSharedTexture() wglDXSetResourceShareHandleNV() failed!" << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -291,14 +291,14 @@ void D3DInteropTexture2D::createSharedTexture()
     // This lock synchronizes control of the texture between D3D and OpenGL
     // You *must* lock and unlock this resource when using the texture in OpenGL for any operation.
     // TBD for DirectX operations.
-    hSharedTextureLock = wglDXRegisterObjectNV(
+    m_hWglSharedTextureLock = wglDXRegisterObjectNV(
         hWglD3DDevice,            // hDevice  | 
         m_D3DTexture,             // dxObject | 
         m_OpenGLTextureName,      // name     | 
         GL_TEXTURE_2D,            // type     | 
         WGL_ACCESS_READ_WRITE_NV  // access   | 
     );
-    if (hSharedTextureLock == NULL) {
+    if (m_hWglSharedTextureLock == NULL) {
         std::cerr << "wglDXRegisterObjectNV failed" << std::endl;
         exit(EXIT_FAILURE);
     }
