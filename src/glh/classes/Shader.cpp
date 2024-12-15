@@ -34,7 +34,7 @@ bool Shader::isCompiled()
 //-----------------------------------------------
 std::string Shader::getInfoLog()
 {
-    std::array<char, INFO_LOG_SIZE> infoLog;
+    std::array<char, INFO_LOG_SIZE> infoLog = {};
     GLsizei length = 0;
     glhGetShaderInfoLog(m_ShaderName, INFO_LOG_SIZE, &length, infoLog.data());
     return std::string(infoLog.data());

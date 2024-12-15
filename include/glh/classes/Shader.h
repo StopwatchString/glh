@@ -3,6 +3,7 @@
 
 #include "glh/functionWrappers.h"
 
+#include <string>
 #include <array>
 
 class Shader

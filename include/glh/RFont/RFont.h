@@ -470,7 +470,8 @@ void RFont_init(size_t width, size_t height) {
 
 #ifndef RFONT_NO_STDIO
 RFont_font* RFont_font_init(const char* font_name) {
-   FILE* ttf_file = fopen(font_name, "rb");
+   FILE* ttf_file = nullptr;
+   fopen_s(&ttf_file, font_name, "rb");
 
    fseek(ttf_file, 0U, SEEK_END);
    size_t size = ftell(ttf_file);
