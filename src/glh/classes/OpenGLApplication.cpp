@@ -168,6 +168,7 @@ void OpenGLApplication::initDearImgui()
 void OpenGLApplication::renderFunc() const
 {
     try {
+        // Capture glfw and imgui context on this thread
         glfwMakeContextCurrent(glfwWindow);
         ImGui::SetCurrentContext(imguiContext);
 
