@@ -61,6 +61,7 @@ OpenGLApplication::OpenGLApplication(const ApplicationConfig& appConfig)
 {
     initGLFW();
     initExtensions();
+    initDearImgui();
     startRenderThread();
     eventLoop();
 }
@@ -71,6 +72,13 @@ OpenGLApplication::OpenGLApplication(const ApplicationConfig& appConfig)
 OpenGLApplication::~OpenGLApplication()
 {
     renderThread.join();
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(glfwWindow);
+    glfwTerminate();
 }
 
 //-----------------------------------------------
@@ -102,6 +110,10 @@ void OpenGLApplication::initGLFW()
     GLFWkeyfun keyCallback = appConfig.customKeyCallback == nullptr ? defaultKeyCallback : appConfig.customKeyCallback;
     glfwSetKeyCallback(glfwWindow, keyCallback);
 
+    if (appConfig.customDropCallback != nullptr) {
+        glfwSetDropCallback(glfwWindow, appConfig.customDropCallback);
+    }
+
     glfwSetWindowPos(glfwWindow, appConfig.windowPosX, appConfig.windowPosY);
 
     glfwMakeContextCurrent(glfwWindow);
@@ -132,11 +144,33 @@ void OpenGLApplication::initExtensions()
 }
 
 //-----------------------------------------------
+// initDearImgui()
+//-----------------------------------------------
+void OpenGLApplication::initDearImgui()
+{
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    imguiContext = ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
+    ImGui_ImplOpenGL3_Init(appConfig.glslVersionString.c_str());
+}
+
+//-----------------------------------------------
 // renderFunc()
 //-----------------------------------------------
 void OpenGLApplication::renderFunc() const
 {
     try {
+        glfwMakeContextCurrent(glfwWindow);
+        ImGui::SetCurrentContext(imguiContext);
+
         std::function<void(GLFWwindow*)> drawFunction = appConfig.customDrawFunc == nullptr ? defaultDrawFunc : appConfig.customDrawFunc;
         drawFunction(glfwWindow);
     }

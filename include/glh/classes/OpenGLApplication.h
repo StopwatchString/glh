@@ -1,5 +1,5 @@
-#ifndef OPENGL_APPLICATION_H
-#define OPENGL_APPLICATION_H
+#ifndef GLH_OPENGL_APPLICATION_H
+#define GLH_OPENGL_APPLICATION_H
 
 #define GLFW_INCLUDE_NONE
 #include "GLFW/glfw3.h"
@@ -7,6 +7,10 @@
 #include "GLFW/glfw3native.h"
 
 #include "glh/glh.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 #include <thread>
 #include <string>
@@ -26,11 +30,14 @@ public:
         bool windowResizeEnable  { false };
         bool windowDarkmode      { false };
         bool windowRounded       { false };
+        bool vsyncEnable         { false };
         int glVersionMajor       { 4 };
         int glVersionMinor       { 6 };
+        std::string glslVersionString { "#version 460" }; // Used for DearImgui, leave default unless you know what to put here
         std::function<void(GLFWwindow*)> customDrawFunc = nullptr;
-        GLFWkeyfun customKeyCallback = nullptr;
-        GLFWerrorfun customErrorCallback = nullptr;
+        GLFWkeyfun customKeyCallback = nullptr; // std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
+        GLFWerrorfun customErrorCallback = nullptr; // std::function<void(int error_code, const char* description)>
+        GLFWdropfun customDropCallback = nullptr; // std::function<void(GLFWwindow* window, int count, const char** paths)>
     };
 
     OpenGLApplication(const ApplicationConfig& appConfig);
@@ -39,6 +46,7 @@ public:
 private:
     void initGLFW();
     void initExtensions();
+    void initDearImgui();
     void startRenderThread();
     void eventLoop();
 
@@ -47,8 +55,9 @@ private:
     ApplicationConfig appConfig{};
 
     GLFWwindow* glfwWindow{ nullptr };
-    std::thread renderThread;
+    ImGuiContext* imguiContext{ nullptr };
 
+    std::thread renderThread;
 };
 
 #endif
