@@ -40,7 +40,6 @@ static void defaultDrawFunc(GLFWwindow* window)
         return input;
         };
 
-    glfwMakeContextCurrent(window);
     while (!glfwWindowShouldClose(window)) {
         float r = 0.0f;
         float g = 0.0f;
@@ -94,6 +93,8 @@ void OpenGLApplication::initGLFW()
     glfwWindowHint(GLFW_VERSION_MINOR, appConfig.glVersionMinor);
     glfwWindowHint(GLFW_RESIZABLE, appConfig.windowResizeEnable ? GLFW_TRUE : GLFW_FALSE);
     glfwWindowHint(GLFW_DECORATED, appConfig.windowBorderless ? GLFW_FALSE : GLFW_TRUE);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, appConfig.transparentFramebuffer ? GLFW_TRUE : GLFW_FALSE);
+    glfwWindowHint(GLFW_FLOATING, appConfig.windowAlwaysOnTop ? GLFW_TRUE : GLFW_FALSE);
 
     glfwWindow = glfwCreateWindow(appConfig.windowInitWidth, appConfig.windowInitHeight, appConfig.windowName.c_str(), nullptr, nullptr);
     if (glfwWindow == nullptr) {

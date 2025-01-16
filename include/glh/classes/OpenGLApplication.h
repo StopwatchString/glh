@@ -22,17 +22,19 @@ public:
     struct ApplicationConfig
     {
         std::string windowName;
-        int windowInitWidth      { 0 };
-        int windowInitHeight     { 0 };
-        int windowPosX           { 0 };
-        int windowPosY           { 0 };
-        bool windowBorderless    { false };
-        bool windowResizeEnable  { false };
-        bool windowDarkmode      { false };
-        bool windowRounded       { false };
-        bool vsyncEnable         { false };
-        int glVersionMajor       { 4 };
-        int glVersionMinor       { 6 };
+        int windowInitWidth         { 0 };
+        int windowInitHeight        { 0 };
+        int windowPosX              { 0 };
+        int windowPosY              { 0 };
+        bool windowBorderless       { false };
+        bool windowResizeEnable     { false };
+        bool windowDarkmode         { false };
+        bool windowRounded          { false };
+        bool windowAlwaysOnTop      { false };
+        bool vsyncEnable            { false };
+        bool transparentFramebuffer { false };
+        int glVersionMajor          { 4 };
+        int glVersionMinor          { 6 };
         std::string glslVersionString { "#version 460" }; // Used for DearImgui, leave default unless you know what to put here
         std::function<void(GLFWwindow*)> customDrawFunc = nullptr;
         GLFWkeyfun customKeyCallback = nullptr; // std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
