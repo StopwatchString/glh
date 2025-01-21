@@ -198,6 +198,12 @@ void OpenGLApplication::startRenderThread()
 void OpenGLApplication::eventLoop()
 {
     while (!glfwWindowShouldClose(glfwWindow)) {
-        glfwWaitEvents();
+        if (appConfig.customPollingFunc == nullptr) {
+            glfwWaitEvents();
+        }
+        else {
+            glfwPollEvents();
+            appConfig.customPollingFunc();
+        }
     }
 }

@@ -40,6 +40,7 @@ public:
         GLFWkeyfun customKeyCallback = nullptr; // std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
         GLFWerrorfun customErrorCallback = nullptr; // std::function<void(int error_code, const char* description)>
         GLFWdropfun customDropCallback = nullptr; // std::function<void(GLFWwindow* window, int count, const char** paths)>
+        std::function<void()> customPollingFunc = nullptr;
     };
 
     OpenGLApplication(const ApplicationConfig& appConfig);
