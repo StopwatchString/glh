@@ -161,6 +161,8 @@ void OpenGLApplication::initDearImgui()
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
     ImGui_ImplOpenGL3_Init(appConfig.glslVersionString.c_str());
+
+    ImGui::GetIO().IniFilename = appConfig.imguiIniFileName;
 }
 
 //-----------------------------------------------

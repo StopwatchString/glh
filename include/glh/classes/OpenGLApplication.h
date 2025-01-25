@@ -39,6 +39,7 @@
 //  appConfig.glVersionMajor = 4;
 //  appConfig.glVersionMinor = 6;
 //  appConfig.glslVersionString = "#version 460"; // Used for DearImgui, leave default unless you know what to put here
+//  appConfig.imguiIniFileName = nullptr;
 //  appConfig.customDrawFunc = nullptr;      // std::function<void(GLFWwindow*)>
 //  appConfig.customKeyCallback = nullptr;   // std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
 //  appConfig.customErrorCallback = nullptr; // std::function<void(int error_code, const char* description)>
@@ -66,6 +67,7 @@ public:
         int glVersionMajor          { 4 };
         int glVersionMinor          { 6 };
         std::string glslVersionString { "#version 460" }; // Used for DearImgui, leave default unless you know what to put here
+        const char* imguiIniFileName { nullptr };
         std::function<void(GLFWwindow*)> customDrawFunc = nullptr;
         GLFWkeyfun customKeyCallback = nullptr; // std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
         GLFWerrorfun customErrorCallback = nullptr; // std::function<void(int error_code, const char* description)>
