@@ -102,8 +102,8 @@ void OpenGLApplication::initGLFW()
     }
 
     HWND hWnd = glfwGetWin32Window(glfwWindow);
-    bool hDarkModeResult = setWindowDarkMode(hWnd, appConfig.windowDarkmode);
-    bool hRoundedResult = setWindowRoundedCorners(hWnd, appConfig.windowRounded);
+    bool hDarkModeResult = cpputils::windows::setWindowDarkMode(hWnd, appConfig.windowDarkmode);
+    bool hRoundedResult = cpputils::windows::setWindowRoundedCorners(hWnd, appConfig.windowRounded);
 
     GLFWerrorfun errorCallback = appConfig.customErrorCallback == nullptr ? defaultErrorCallback : appConfig.customErrorCallback;
     glfwSetErrorCallback(errorCallback);
