@@ -87,7 +87,7 @@ private:
 
     void renderFunc() const;
 
-    ApplicationConfig appConfig{};
+    const ApplicationConfig appConfig{};
 
     GLFWwindow* glfwWindow{ nullptr };
     ImGuiContext* imguiContext{ nullptr };
