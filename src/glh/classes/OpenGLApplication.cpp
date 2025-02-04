@@ -1,9 +1,9 @@
 #include "glh/classes/OpenGLApplication.h"
 
-#include "cpputils/windows/dwm.h"
-
-#include <iostream>
 #include <exception>
+#include <iostream>
+
+#include "cpputils/windows/dwm.h"
 
 //-----------------------------------------------
 // static defaultKeyCallback()
@@ -11,11 +11,9 @@
 static void defaultKeyCallback(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
 {
     switch (key) {
-    case GLFW_KEY_ESCAPE:
-        if (action == GLFW_PRESS) {
-            glfwSetWindowShouldClose(glfwWindow, GLFW_TRUE);
-        }
-        break;
+        case GLFW_KEY_ESCAPE:
+            if (action == GLFW_PRESS) { glfwSetWindowShouldClose(glfwWindow, GLFW_TRUE); }
+            break;
     }
 }
 
@@ -33,12 +31,12 @@ static void defaultErrorCallback(int errorcode, const char* description)
 static void defaultDrawFunc(GLFWwindow* window)
 {
     auto scale = [](float oldLower, float oldUpper, float newLower, float newUpper, float input) {
-        input -= oldLower;               // Move old lower bound to 0
-        input /= (oldUpper - oldLower);  // Normalize value between 0 and 1
-        input *= (newUpper - newLower);  // Scale normalized value to new bound size
-        input += newLower;               // Move scale to new lower bound
+        input -= oldLower;              // Move old lower bound to 0
+        input /= (oldUpper - oldLower); // Normalize value between 0 and 1
+        input *= (newUpper - newLower); // Scale normalized value to new bound size
+        input += newLower;              // Move scale to new lower bound
         return input;
-        };
+    };
 
     while (!glfwWindowShouldClose(window)) {
         float r = 0.0f;
@@ -55,8 +53,7 @@ static void defaultDrawFunc(GLFWwindow* window)
 //-----------------------------------------------
 // Constructor
 //-----------------------------------------------
-OpenGLApplication::OpenGLApplication(const ApplicationConfig& appConfig)
-    : appConfig(appConfig)
+OpenGLApplication::OpenGLApplication(const ApplicationConfig& appConfig) : appConfig(appConfig)
 {
     initGLFW();
     initExtensions();
@@ -85,9 +82,7 @@ OpenGLApplication::~OpenGLApplication()
 //-----------------------------------------------
 void OpenGLApplication::initGLFW()
 {
-    if (!glfwInit()) {
-        throw std::runtime_error("ERROR OpenGLApplication::initGLFW() glfwInit() failed!");
-    }
+    if (!glfwInit()) { throw std::runtime_error("ERROR OpenGLApplication::initGLFW() glfwInit() failed!"); }
 
     glfwWindowHint(GLFW_VERSION_MAJOR, appConfig.glVersionMajor);
     glfwWindowHint(GLFW_VERSION_MINOR, appConfig.glVersionMinor);
@@ -96,7 +91,8 @@ void OpenGLApplication::initGLFW()
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, appConfig.transparentFramebuffer ? GLFW_TRUE : GLFW_FALSE);
     glfwWindowHint(GLFW_FLOATING, appConfig.windowAlwaysOnTop ? GLFW_TRUE : GLFW_FALSE);
 
-    glfwWindow = glfwCreateWindow(appConfig.windowInitWidth, appConfig.windowInitHeight, appConfig.windowName.c_str(), nullptr, nullptr);
+    glfwWindow = glfwCreateWindow(
+        appConfig.windowInitWidth, appConfig.windowInitHeight, appConfig.windowName.c_str(), nullptr, nullptr);
     if (glfwWindow == nullptr) {
         throw std::runtime_error("ERROR OpenGLApplication::initGLFW() Could not create window!");
     }
@@ -105,15 +101,14 @@ void OpenGLApplication::initGLFW()
     bool hDarkModeResult = cpputils::windows::setWindowDarkMode(hWnd, appConfig.windowDarkmode);
     bool hRoundedResult = cpputils::windows::setWindowRoundedCorners(hWnd, appConfig.windowRounded);
 
-    GLFWerrorfun errorCallback = appConfig.customErrorCallback == nullptr ? defaultErrorCallback : appConfig.customErrorCallback;
+    GLFWerrorfun errorCallback
+        = appConfig.customErrorCallback == nullptr ? defaultErrorCallback : appConfig.customErrorCallback;
     glfwSetErrorCallback(errorCallback);
-    
+
     GLFWkeyfun keyCallback = appConfig.customKeyCallback == nullptr ? defaultKeyCallback : appConfig.customKeyCallback;
     glfwSetKeyCallback(glfwWindow, keyCallback);
 
-    if (appConfig.customDropCallback != nullptr) {
-        glfwSetDropCallback(glfwWindow, appConfig.customDropCallback);
-    }
+    if (appConfig.customDropCallback != nullptr) { glfwSetDropCallback(glfwWindow, appConfig.customDropCallback); }
 
     glfwSetWindowPos(glfwWindow, appConfig.windowPosX, appConfig.windowPosY);
 
@@ -126,21 +121,25 @@ void OpenGLApplication::initGLFW()
 void OpenGLApplication::initExtensions()
 {
     if (!glhLoadExtensions(glfwGetProcAddress)) {
-        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to load platform-agnostic OpenGL extensions!");
+        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to load "
+                                 "platform-agnostic OpenGL extensions!");
     }
 
     HWND hWnd = glfwGetWin32Window(glfwWindow);
     if (hWnd == NULL) {
-        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to retreive native Win32 window handle from GLFW!");
+        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to retreive "
+                                 "native Win32 window handle from GLFW!");
     }
 
     HDC hDc = GetDC(hWnd);
     if (hDc == NULL) {
-        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to get Win32 Device Context via handle to window!");
+        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to get Win32 "
+                                 "Device Context via handle to window!");
     }
 
     if (!glhLoadPlatformExtensions(hDc, glfwGetProcAddress)) {
-        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to load platform-specific OpenGL extensions!");
+        throw std::runtime_error("ERROR OpenGLApplication::initExtensions() Failed to load "
+                                 "platform-specific OpenGL extensions!");
     }
 }
 
@@ -152,15 +151,16 @@ void OpenGLApplication::initDearImgui()
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     imguiContext = ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(glfwWindow, true);
-    ImGui_ImplOpenGL3_Init(appConfig.glslVersionString.c_str());
+    ImGui_ImplOpenGL3_Init(appConfig.dearImguiGlslVersionString.c_str());
 
     ImGui::GetIO().IniFilename = appConfig.imguiIniFileName;
 }
@@ -175,7 +175,8 @@ void OpenGLApplication::renderFunc() const
         glfwMakeContextCurrent(glfwWindow);
         ImGui::SetCurrentContext(imguiContext);
 
-        std::function<void(GLFWwindow*)> drawFunction = appConfig.customDrawFunc == nullptr ? defaultDrawFunc : appConfig.customDrawFunc;
+        std::function<void(GLFWwindow*)> drawFunction
+            = appConfig.customDrawFunc == nullptr ? defaultDrawFunc : appConfig.customDrawFunc;
         drawFunction(glfwWindow);
     }
     catch (std::exception& e) {
@@ -200,9 +201,7 @@ void OpenGLApplication::startRenderThread()
 void OpenGLApplication::eventLoop()
 {
     while (!glfwWindowShouldClose(glfwWindow)) {
-        if (appConfig.customPollingFunc == nullptr) {
-            glfwWaitEvents();
-        }
+        if (appConfig.customPollingFunc == nullptr) { glfwWaitEvents(); }
         else {
             glfwPollEvents();
             appConfig.customPollingFunc();

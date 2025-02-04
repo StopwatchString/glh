@@ -10,13 +10,17 @@
 
 // Classes
 #include "glh/classes/Texture2D.h"
-#include "glh/classes/D3DInteropTexture2D.h"
 #include "glh/classes/Framebuffer.h"
+
+// DirectX Interop
+#include "glh/directXInterop/directx_utils.h"
+#include "glh/directXInterop/D3DInteropTexture2D.h"
 
 //-----------------------------------------------
 // glhLoadExtensions()
 //-----------------------------------------------
-static bool glhLoadExtensions(GLADloadfunc load) {
+static bool glhLoadExtensions(GLADloadfunc load)
+{
     return gladLoadGL((GLADloadfunc)load);
 }
 
@@ -24,7 +28,8 @@ static bool glhLoadExtensions(GLADloadfunc load) {
 // glhLoadPlatformExtensions()
 //-----------------------------------------------
 #ifdef _WIN32
-static bool glhLoadPlatformExtensions(HDC hdc, GLADloadfunc load) {
+static bool glhLoadPlatformExtensions(HDC hdc, GLADloadfunc load)
+{
     return gladLoadWGL(hdc, (GLADloadfunc)load);
 }
 #elif defined(__linux__)

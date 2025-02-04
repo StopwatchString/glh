@@ -3,8 +3,7 @@
 //-----------------------------------------------
 // Constructor
 //-----------------------------------------------
-Shader::Shader(GLenum shaderType, const char* source)
-    : m_ShaderType(shaderType)
+Shader::Shader(GLenum shaderType, const char* source) : m_ShaderType(shaderType)
 {
     m_ShaderName = glhCreateShader(shaderType);
     glhShaderSource(m_ShaderName, 1, &source, NULL);

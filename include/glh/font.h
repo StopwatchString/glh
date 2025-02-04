@@ -3,9 +3,10 @@
 
 #include <string>
 
-struct FontRect {
-    size_t width{ 0 };
-    size_t height{ 0 };
+struct FontRect
+{
+    size_t width{0};
+    size_t height{0};
 };
 
 void glhInitFont(size_t framebufferWidth, size_t framebufferHeight);

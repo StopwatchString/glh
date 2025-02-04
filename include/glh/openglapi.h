@@ -4,9 +4,9 @@
 #include "glad/gl.h"
 
 #ifdef _WIN32
-#include "glad/wgl.h"
+    #include "glad/wgl.h"
 #elif defined(__linux__)
-#include "glad/glx.h"
+    #include "glad/glx.h"
 #endif
 
 #endif

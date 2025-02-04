@@ -11,19 +11,19 @@ static RFont_font* font = nullptr;
 
 // RFont doesn't cleanly preserve OpenGL state between calls.
 // push/popOpenGLState() ensure that state is undisturbed.
-GLint vao{ 0 };
-GLint vbo{ 0 };
-GLint ebo{ 0 };
-GLint activeTextureUnit{ 0 };
-GLint boundTexture2D{ 0 };
-bool texture2DEnabled{ false };
-bool depthTestEnabled{ false };
-bool cullFaceEnabled{ false };
-bool blendEnabled{ false };
-GLint blendSrcFactor{ 0 };
-GLint blendDstFactor{ 0 };
-GLint shadeModel{ 0 };
-GLint program{ 0 };
+GLint vao{0};
+GLint vbo{0};
+GLint ebo{0};
+GLint activeTextureUnit{0};
+GLint boundTexture2D{0};
+bool texture2DEnabled{false};
+bool depthTestEnabled{false};
+bool cullFaceEnabled{false};
+bool blendEnabled{false};
+GLint blendSrcFactor{0};
+GLint blendDstFactor{0};
+GLint shadeModel{0};
+GLint program{0};
 
 //-----------------------------------------------
 // pushOpenGLState()
@@ -115,9 +115,7 @@ FontRect glhDrawText(const std::string& text, float x, float y, float size, floa
 //-----------------------------------------------
 void glhSetTextColor(float r, float g, float b, float a)
 {
-    if (font != nullptr) {
-        RFont_set_color(r, g, b, a);
-    }
+    if (font != nullptr) { RFont_set_color(r, g, b, a); }
 }
 
 //-----------------------------------------------

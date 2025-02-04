@@ -25,20 +25,21 @@ public:
     void setStencilAttachment2D(GLenum textarget, GLuint texture);
     void unbindStencilAttachment2D();
 
-
     GLuint handle() const { return m_FramebufferName; }
     bool isValid() const { return m_FramebufferName != 0; }
-    bool isComplete() const { return glhCheckNamedFramebufferStatus(m_FramebufferName, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE; }
+    bool isComplete() const
+    {
+        return glhCheckNamedFramebufferStatus(m_FramebufferName, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+    }
 
 private:
-    GLuint m_FramebufferName{ 0 };
-    GLenum m_ColorAttachmentTarget{ GL_NONE };
-    GLuint m_ColorAttachmentTextureName{ 0 };
-    GLenum m_DepthAttachmentTarget{ GL_NONE };
-    GLuint m_DepthAttachmentTextureName{ 0 };
-    GLenum m_StencilAttachmentTarget{ GL_NONE };
-    GLuint m_StencilAttachmentTextureName{ 0 };
-
+    GLuint m_FramebufferName{0};
+    GLenum m_ColorAttachmentTarget{GL_NONE};
+    GLuint m_ColorAttachmentTextureName{0};
+    GLenum m_DepthAttachmentTarget{GL_NONE};
+    GLuint m_DepthAttachmentTextureName{0};
+    GLenum m_StencilAttachmentTarget{GL_NONE};
+    GLuint m_StencilAttachmentTextureName{0};
 };
 
 #endif

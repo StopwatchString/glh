@@ -15,18 +15,12 @@ Framebuffer::Framebuffer()
 //-----------------------------------------------
 // Destructor
 //-----------------------------------------------
-Framebuffer::~Framebuffer()
-{
-
-}
+Framebuffer::~Framebuffer() {}
 
 //-----------------------------------------------
 // Move Constructor
 //-----------------------------------------------
-Framebuffer::Framebuffer(Framebuffer&& other) noexcept
-{
-
-}
+Framebuffer::Framebuffer(Framebuffer&& other) noexcept {}
 
 //-----------------------------------------------
 // Move Assignment
@@ -91,7 +85,7 @@ void Framebuffer::setDepthAttachment2D(GLenum textarget, GLuint texture)
 void Framebuffer::unbindDepthAttachment2D()
 {
     glhFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_DepthAttachmentTarget, 0, 0);
-    
+
     m_DepthAttachmentTarget = GL_NONE;
     m_DepthAttachmentTextureName = 0;
 }

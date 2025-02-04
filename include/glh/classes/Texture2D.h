@@ -47,13 +47,13 @@ public:
     bool hasMipmaps() const { return m_Levels > 1; }
 
 private:
-    GLuint m_TextureName      { 0 };
-    bool   m_HasData          { false };
+    GLuint m_TextureName{0};
+    bool m_HasData{false};
 
-    GLenum  m_InternalFormat  { GL_NONE };
-    GLsizei m_Width           { 0 };
-    GLsizei m_Height          { 0 };
-    GLsizei m_Levels          { 0 };
+    GLenum m_InternalFormat{GL_NONE};
+    GLsizei m_Width{0};
+    GLsizei m_Height{0};
+    GLsizei m_Levels{0};
 };
 
 #endif

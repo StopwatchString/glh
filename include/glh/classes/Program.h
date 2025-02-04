@@ -18,7 +18,7 @@ public:
     void isValid();
 
 private:
-    GLuint m_ProgramName{ 0 };
+    GLuint m_ProgramName{0};
 };
 
 #endif

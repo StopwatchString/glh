@@ -5,11 +5,11 @@
 //-----------------------------------------------
 // Parameterized Constructor
 //-----------------------------------------------
-Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool useMipmaps)
-    : m_InternalFormat(internalFormat),
-      m_Width(width),
-      m_Height(height),
-      m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(max(width, height))) : 1)
+Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool useMipmaps) :
+    m_InternalFormat(internalFormat),
+    m_Width(width),
+    m_Height(height),
+    m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(max(width, height))) : 1)
 {
     // Create and bind so that the texture is associated as a 2D texture
     glhGenTextures(1, &m_TextureName);
@@ -31,13 +31,13 @@ Texture2D::Texture2D(GLenum internalFormat, GLsizei width, GLsizei height, bool 
 //-----------------------------------------------
 // Move Constructor
 //-----------------------------------------------
-Texture2D::Texture2D(Texture2D&& other) noexcept
-    : m_TextureName(other.m_TextureName),
-      m_HasData(other.m_HasData),
-      m_InternalFormat(other.m_InternalFormat),
-      m_Width(other.m_Width),
-      m_Height(other.m_Height),
-      m_Levels(other.m_Levels)
+Texture2D::Texture2D(Texture2D&& other) noexcept :
+    m_TextureName(other.m_TextureName),
+    m_HasData(other.m_HasData),
+    m_InternalFormat(other.m_InternalFormat),
+    m_Width(other.m_Width),
+    m_Height(other.m_Height),
+    m_Levels(other.m_Levels)
 {
     // Clear their data
     other.m_TextureName = 0;
@@ -55,9 +55,7 @@ Texture2D& Texture2D::operator=(Texture2D&& other) noexcept
 {
     if (this != &other) {
         // Free current resources
-        if (m_TextureName != 0) {
-            glhDeleteTextures(1, &m_TextureName);
-        }
+        if (m_TextureName != 0) { glhDeleteTextures(1, &m_TextureName); }
 
         // Move ownership
         m_TextureName = other.m_TextureName;
@@ -108,9 +106,7 @@ void Texture2D::unbind() const
 void Texture2D::uploadData(GLenum sourceFormat, GLenum sourceDataType, const void* sourceData)
 {
     glhTextureSubImage2D(m_TextureName, 0, 0, 0, m_Width, m_Height, sourceFormat, sourceDataType, sourceData);
-    if (m_Levels > 1) {
-        glhGenerateTextureMipmap(m_TextureName);
-    }
+    if (m_Levels > 1) { glhGenerateTextureMipmap(m_TextureName); }
     m_HasData = true;
 }
 

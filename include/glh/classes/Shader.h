@@ -21,8 +21,8 @@ public:
     std::string getInfoLog();
 
 private:
-    GLenum m_ShaderType{ GL_NONE };
-    GLuint m_ShaderName{ 0 };
+    GLenum m_ShaderType{GL_NONE};
+    GLuint m_ShaderName{0};
 };
 
 #endif

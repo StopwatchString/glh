@@ -2,8 +2,8 @@
 #define GLH_SHARED_LIBRARY_LOADER_H
 
 #if defined(_WIN32)
-#include <windows.h>
-#elif defined (__linux__)
+    #include <windows.h>
+#elif defined(__linux__)
 // TODO:: Linux Implementation
 #endif
 
@@ -12,7 +12,7 @@
 
 //-----------------------------------------------------
 // class SharedLibraryLoader
-// 
+//
 // Platform independent RAII shared library loader.
 // Opens SharedLibrary from input name. Handles cleanup
 // for library handle on destruction.
@@ -23,17 +23,16 @@ public:
     //-----------------------------------------------------
     // Constructor
     //-----------------------------------------------------
-    SharedLibraryLoader(const std::string& libraryName)
-        : libraryName(libraryName)
+    SharedLibraryLoader(const std::string& libraryName) : libraryName(libraryName)
     {
 #if defined(_WIN32)
         hLibModule = LoadLibraryA(libraryName.c_str());
         if (hLibModule == NULL) {
-            std::cerr << "ERROR cpputils SharedLibraryLoader() Failed to load " 
-                << libraryName << " GetLastError():" << GetLastError() << std::endl;
+            std::cerr << "ERROR cpputils SharedLibraryLoader() Failed to load " << libraryName
+                      << " GetLastError():" << GetLastError() << std::endl;
         }
-#elif defined (__linux__)
-        // TODO:: Linux Implementation
+#elif defined(__linux__)
+            // TODO:: Linux Implementation
 #endif
     }
 
@@ -47,8 +46,8 @@ public:
             FreeLibrary(hLibModule);
             hLibModule = NULL;
         }
-#elif defined (__linux__)
-        // TODO:: Linux Implementation
+#elif defined(__linux__)
+            // TODO:: Linux Implementation
 #endif
     }
 
@@ -59,11 +58,9 @@ public:
     {
         void* funcPointer = nullptr;
 #if defined(_WIN32)
-        if (hLibModule != NULL) {
-            funcPointer = GetProcAddress(hLibModule, functionName);
-        }
-#elif defined (__linux__)
-        // TODO:: Linux Implementation
+        if (hLibModule != NULL) { funcPointer = GetProcAddress(hLibModule, functionName); }
+#elif defined(__linux__)
+            // TODO:: Linux Implementation
 #endif
         return funcPointer;
     }
@@ -75,9 +72,9 @@ public:
     {
 #if defined(_WIN32)
         return hLibModule != NULL;
-#elif defined (__linux__)
-        // TODO:: Linux Implementation
-#endif    
+#elif defined(__linux__)
+            // TODO:: Linux Implementation
+#endif
     }
 
     //-----------------------------------------------------
@@ -90,9 +87,9 @@ private:
 
     // Platform-specific member variables
 #if defined(_WIN32)
-    HMODULE hLibModule{ NULL };
-#elif defined (__linux__)
-    // TODO:: Linux Implementation
+    HMODULE hLibModule{NULL};
+#elif defined(__linux__)
+        // TODO:: Linux Implementation
 #endif
 };
 

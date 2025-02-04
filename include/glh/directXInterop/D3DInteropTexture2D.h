@@ -15,8 +15,8 @@ public:
     D3DInteropTexture2D(const D3DInteropTexture2D& other) = delete;
     D3DInteropTexture2D& operator=(const D3DInteropTexture2D& other) = delete;
 
-    D3DInteropTexture2D(D3DInteropTexture2D&& other) noexcept;
-    D3DInteropTexture2D& operator=(D3DInteropTexture2D&& other) noexcept;
+    D3DInteropTexture2D(D3DInteropTexture2D&& other) noexcept = delete;
+    D3DInteropTexture2D& operator=(D3DInteropTexture2D&& other) noexcept = delete;
 
     // Binds the texture on GL_TEXTURE_2D
     void bind() const;
@@ -61,12 +61,13 @@ public:
     static bool direct3DIsInit() { return d3dDevice1 != NULL && d3dDeviceContext1 != NULL && hWglD3DDevice != NULL; }
     static void initDirect3D();
     static void shutdownDirect3D();
+
 private:
-    bool m_HasData{ false };
-    GLenum m_InternalFormat{ GL_NONE };
-    GLsizei m_Width{ 0 };
-    GLsizei m_Height{ 0 };
-    GLsizei m_Levels{ 0 };
+    bool m_HasData{false};
+    GLenum m_InternalFormat{GL_NONE};
+    GLsizei m_Width{0};
+    GLsizei m_Height{0};
+    GLsizei m_Levels{0};
 
     // D3DState
     static Microsoft::WRL::ComPtr<ID3D11Device1> d3dDevice1;
@@ -74,10 +75,10 @@ private:
     static HANDLE hWglD3DDevice;
 
     // Texture handles
-    GLuint m_OpenGLTextureName{ 0 };
-    ID3D11Texture2D* m_D3DTexture{ nullptr };
-    HANDLE m_hDxTextureSharedResource{ NULL };
-    HANDLE m_hWglSharedTextureLock{ NULL };
+    GLuint m_OpenGLTextureName{0};
+    ID3D11Texture2D* m_D3DTexture{nullptr};
+    HANDLE m_hDxTextureSharedResource{NULL};
+    HANDLE m_hWglSharedTextureLock{NULL};
     void createSharedTexture();
 };
 
