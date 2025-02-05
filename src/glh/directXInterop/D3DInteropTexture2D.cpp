@@ -6,25 +6,16 @@
 #include <vector>
 #include <cmath>
 
-Microsoft::WRL::ComPtr<ID3D11Device1> D3DInteropTexture2D::d3dDevice1 = nullptr;
-Microsoft::WRL::ComPtr<ID3D11DeviceContext1> D3DInteropTexture2D::d3dDeviceContext1 = nullptr;
-HANDLE D3DInteropTexture2D::hWglD3DDevice = NULL;
-
 //-----------------------------------------------
 // Parameterized Constructor
 //-----------------------------------------------
-D3DInteropTexture2D::D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps) :
+D3DInteropTexture2D::D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps, Direct3DContext context) :
     m_Width(width),
     m_Height(height),
     m_InternalFormat(GL_RGBA8),
-    m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(max(width, height))) : 1)
+    m_Levels(useMipmaps ? 1 + static_cast<GLsizei>(std::log2(max(width, height))) : 1),
+    m_Context(context)
 {
-    // Only proceed if direct3d is init
-    if (!direct3DIsInit()) {
-        initDirect3D();
-        if (!direct3DIsInit()) return;
-    }
-
     createSharedTexture();
 }
 
@@ -34,7 +25,9 @@ D3DInteropTexture2D::D3DInteropTexture2D(GLsizei width, GLsizei height, bool use
 D3DInteropTexture2D::~D3DInteropTexture2D()
 {
     // TODO
-    if (hWglD3DDevice != NULL) { interopUnlock(); }
+    if (m_Context.hWglD3DDevice != NULL) {
+        interopUnlock();
+    }
 }
 
 //-----------------------------------------------
@@ -59,7 +52,9 @@ void D3DInteropTexture2D::unbind() const
 void D3DInteropTexture2D::uploadData(GLenum sourceFormat, GLenum sourceDataType, const void* sourceData)
 {
     glhTextureSubImage2D(m_OpenGLTextureName, 0, 0, 0, m_Width, m_Height, sourceFormat, sourceDataType, sourceData);
-    if (m_Levels > 1) { glhGenerateTextureMipmap(m_OpenGLTextureName); }
+    if (m_Levels > 1) {
+        glhGenerateTextureMipmap(m_OpenGLTextureName);
+    }
     m_HasData = true;
 }
 
@@ -76,7 +71,7 @@ void D3DInteropTexture2D::setParameter(GLenum parameterName, GLint parameter)
 //-----------------------------------------------
 void D3DInteropTexture2D::interopLock()
 {
-    wglDXLockObjectsNV(hWglD3DDevice, 1, &m_hWglSharedTextureLock);
+    wglDXLockObjectsNV(m_Context.hWglD3DDevice, 1, &m_hWglSharedTextureLock);
 }
 
 //-----------------------------------------------
@@ -84,99 +79,7 @@ void D3DInteropTexture2D::interopLock()
 //-----------------------------------------------
 void D3DInteropTexture2D::interopUnlock()
 {
-    wglDXUnlockObjectsNV(hWglD3DDevice, 1, &m_hWglSharedTextureLock);
-}
-
-//-----------------------------------------------
-// static initDirect3D()
-//-----------------------------------------------
-void D3DInteropTexture2D::initDirect3D()
-{
-    // Load D3D Library
-    static SharedLibraryLoader d3d11dll{"d3d11.dll"};
-    if (!d3d11dll.valid()) {
-        std::cerr << "ERROR initDirect3D() Unable to load d3d11.dll" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    // Get the function pointer for D3D11CreateDevice from the loaded D3D library
-    PFN_D3D11_CREATE_DEVICE D3D11CreateDevicePtr
-        = (PFN_D3D11_CREATE_DEVICE)d3d11dll.loadFunctionPointer("D3D11CreateDevice");
-    if (D3D11CreateDevicePtr == NULL) {
-        std::cerr << "ERROR initDirect3D() Could not GetProcAddress of D3D11CreateDevice" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    // Use D3D11CreateDevice() to make a D3DDevice and D3DDeviceContext
-    Microsoft::WRL::ComPtr<ID3D11Device> d3dDevice = nullptr;
-    Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3dDeviceContext = nullptr;
-    const bool directxDebugFlag = false;
-    const UINT deviceFlags = D3D11_CREATE_DEVICE_PREVENT_INTERNAL_THREADING_OPTIMIZATIONS
-                             | (directxDebugFlag ? D3D11_CREATE_DEVICE_DEBUG : 0) | D3D11_CREATE_DEVICE_SINGLETHREADED;
-    const std::vector<D3D_FEATURE_LEVEL> featureLevel = {D3D_FEATURE_LEVEL_11_1};
-    HRESULT hr = D3D11CreateDevicePtr(
-        NULL,                      // pAdapter
-        D3D_DRIVER_TYPE_HARDWARE,  // DriverType
-        NULL,                      // Software
-        deviceFlags,               // Flags
-        featureLevel.data(),       // pFeatureLevels
-        (UINT)featureLevel.size(), // FeatureLevels
-        D3D11_SDK_VERSION,         // SDK Version
-        &d3dDevice,                // ppDevice
-        NULL,                      // pFeatureLevel
-        &d3dDeviceContext          // ppImmediateContext
-    );
-    if (hr != S_OK) {
-        std::cerr << "ERROR initDirect3D() D3D11CreateDevicePtr failed!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    // Cast d3dDevice and d3dDeviceContext into their 11.1 variants
-    if (!SUCCEEDED(d3dDevice.As(&d3dDevice1))) {
-        std::cerr << "ERROR initDirect3D() Could not cast D3D11 device into its D3D11.1 counterpart!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    if (!SUCCEEDED(d3dDeviceContext.As(&d3dDeviceContext1))) {
-        std::cerr << "ERROR initDirect3D() Could not cast D3D11 device context into its D3D11.1 counterpart!"
-                  << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    // Check that resource sharing is available
-    D3D11_FEATURE_DATA_D3D11_OPTIONS opts;
-    d3dDevice1->CheckFeatureSupport(D3D11_FEATURE_D3D11_OPTIONS, &opts, sizeof(opts));
-    if (opts.ExtendedResourceSharing != 1) {
-        std::cout << "ERROR initDirect3D() DirectX Feature ExtendedResourceSharing is not supported." << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    // Create WGL interop device
-    hWglD3DDevice = wglDXOpenDeviceNV(d3dDevice1.Get());
-    if (hWglD3DDevice == NULL) {
-        std::cerr << "ERROR initDirect3D() wglDXOpenDeviceNV failed!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-
-//-----------------------------------------------
-// shutdownDirect3D()
-//-----------------------------------------------
-void D3DInteropTexture2D::shutdownDirect3D()
-{
-    if (hWglD3DDevice != NULL) {
-        wglDXCloseDeviceNV(hWglD3DDevice);
-        hWglD3DDevice = NULL;
-    }
-
-    if (d3dDeviceContext1 != nullptr) {
-        d3dDeviceContext1->Release();
-        d3dDeviceContext1 = nullptr;
-    }
-
-    if (d3dDevice1 != nullptr) {
-        d3dDevice1->Release();
-        d3dDevice1 = nullptr;
-    }
+    wglDXUnlockObjectsNV(m_Context.hWglD3DDevice, 1, &m_hWglSharedTextureLock);
 }
 
 //-----------------------------------------------
@@ -220,7 +123,7 @@ void D3DInteropTexture2D::createSharedTexture()
     HRESULT hr = NULL;
 
     // Create the DirectX2D texture
-    hr = d3dDevice1->CreateTexture2D(
+    hr = m_Context.d3dDevice1->CreateTexture2D(
         &texDesc,     // pDesc        | Texture description object
         &initialData, // pInitialData | Initial data for texture
         &m_D3DTexture // ppTexture2D  | Target pointer for created texture
@@ -271,7 +174,7 @@ void D3DInteropTexture2D::createSharedTexture()
     // You *must* lock and unlock this resource when using the texture in OpenGL for any operation.
     // TBD for DirectX operations.
     m_hWglSharedTextureLock = wglDXRegisterObjectNV(
-        hWglD3DDevice,           // hDevice  |
+        m_Context.hWglD3DDevice, // hDevice  |
         m_D3DTexture,            // dxObject |
         m_OpenGLTextureName,     // name     |
         GL_TEXTURE_2D,           // type     |

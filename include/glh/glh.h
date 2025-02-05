@@ -13,7 +13,7 @@
 #include "glh/classes/Framebuffer.h"
 
 // DirectX Interop
-#include "glh/directXInterop/directx_utils.h"
+#include "glh/directXInterop/direct3d_utils.h"
 #include "glh/directXInterop/D3DInteropTexture2D.h"
 
 //-----------------------------------------------

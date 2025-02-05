@@ -3,13 +3,15 @@
 
 #include "glh/glh.h"
 
+#include "glh/directXInterop/direct3d_utils.h"
+
 #include <D3D11_1.h>
 #include <wrl/client.h> // for Microsoft::WRL::ComPtr template
 
 class D3DInteropTexture2D
 {
 public:
-    D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps);
+    D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps, Direct3DContext context);
     ~D3DInteropTexture2D();
 
     D3DInteropTexture2D(const D3DInteropTexture2D& other) = delete;
@@ -58,21 +60,14 @@ public:
     // Unlocks the Graphics API interop lock
     void interopUnlock();
 
-    static bool direct3DIsInit() { return d3dDevice1 != NULL && d3dDeviceContext1 != NULL && hWglD3DDevice != NULL; }
-    static void initDirect3D();
-    static void shutdownDirect3D();
-
 private:
+    const Direct3DContext m_Context;
+
     bool m_HasData{false};
     GLenum m_InternalFormat{GL_NONE};
     GLsizei m_Width{0};
     GLsizei m_Height{0};
     GLsizei m_Levels{0};
-
-    // D3DState
-    static Microsoft::WRL::ComPtr<ID3D11Device1> d3dDevice1;
-    static Microsoft::WRL::ComPtr<ID3D11DeviceContext1> d3dDeviceContext1;
-    static HANDLE hWglD3DDevice;
 
     // Texture handles
     GLuint m_OpenGLTextureName{0};
