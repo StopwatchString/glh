@@ -7,7 +7,7 @@
 #include <cmath>
 
 //-----------------------------------------------
-// Parameterized Constructor
+// Export Constructor
 //-----------------------------------------------
 D3DInteropTexture2D::D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps, Direct3DContext context) :
     m_Width(width),
@@ -17,6 +17,47 @@ D3DInteropTexture2D::D3DInteropTexture2D(GLsizei width, GLsizei height, bool use
     m_Context(context)
 {
     createSharedTexture();
+}
+
+//-----------------------------------------------
+// Import Constructor
+//-----------------------------------------------
+D3DInteropTexture2D::D3DInteropTexture2D(HANDLE importTextureHandle, Direct3DContext context) : m_Context(context)
+{
+    if (importTextureHandle != NULL) {
+        HRESULT hr = context.d3dDevice1->OpenSharedResource1(
+            importTextureHandle, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&m_D3DTexture));
+        if (hr != S_OK) {
+            std::cout << "Failed to open imported texture" << std::endl;
+        }
+
+        // Associate the D3DTexture with the generated resource handle
+        if (!wglDXSetResourceShareHandleNV(m_D3DTexture, importTextureHandle)) {
+            std::cerr << "ERROR createSharedTexture() wglDXSetResourceShareHandleNV() failed!" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        // Make the OpenGL Texture
+        glGenTextures(1, &m_OpenGLTextureName);
+
+        // This lock synchronizes control of the texture between D3D and OpenGL
+        // You *must* lock and unlock this resource when using the texture in OpenGL for any operation.
+        // TBD for DirectX operations.
+        m_hWglSharedTextureLock = wglDXRegisterObjectNV(
+            m_Context.hWglD3DDevice, // hDevice  |
+            m_D3DTexture,            // dxObject |
+            m_OpenGLTextureName,     // name     |
+            GL_TEXTURE_2D,           // type     |
+            WGL_ACCESS_READ_WRITE_NV // access   |
+        );
+        if (m_hWglSharedTextureLock == NULL) {
+            std::cerr << "wglDXRegisterObjectNV failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        glhTextureParameteri(m_OpenGLTextureName, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glhTextureParameteri(m_OpenGLTextureName, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
 }
 
 //-----------------------------------------------

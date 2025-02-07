@@ -11,7 +11,8 @@
 class D3DInteropTexture2D
 {
 public:
-    D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps, Direct3DContext context);
+    D3DInteropTexture2D(GLsizei width, GLsizei height, bool useMipmaps, Direct3DContext context); // Export constructor
+    D3DInteropTexture2D(HANDLE importTextureHandle, Direct3DContext context);                     // Import constructor
     ~D3DInteropTexture2D();
 
     D3DInteropTexture2D(const D3DInteropTexture2D& other) = delete;
