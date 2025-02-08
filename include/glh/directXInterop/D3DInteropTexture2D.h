@@ -78,4 +78,35 @@ private:
     void createSharedTexture();
 };
 
+namespace glh {
+namespace d3dinterop {
+
+struct D3DInteropTextureCreateInfo
+{
+    GLsizei width{0};
+    GLsizei height{0};
+    bool useMipmaps{false};
+};
+
+struct D3DInteropTexture
+{
+    GLuint openGLTextureName{0};
+    ID3D11Texture2D* d3dTexture{nullptr};
+    HANDLE hDxTextureSharedResource{NULL};
+    HANDLE hWglSharedTextureLock{NULL};
+    GLenum internalFormat{GL_NONE};
+    GLsizei width{0};
+    GLsizei height{0};
+    GLsizei mipmapLevels{0};
+};
+
+static D3DInteropTexture createD3DInteropTexture(const D3DInteropTextureCreateInfo& createInfo, const Direct3DContext& context);
+static bool destroyD3DInteropTexture(D3DInteropTexture& interopTexture, const Direct3DContext& context);
+
+static void interopLock(D3DInteropTexture& interopTexture, const Direct3DContext& context);
+static void interopUnlock(D3DInteropTexture& interopTexture, const Direct3DContext& context);
+
+} // namespace d3dinterop
+} // namespace glh
+
 #endif
