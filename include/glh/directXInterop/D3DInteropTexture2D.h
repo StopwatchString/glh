@@ -100,11 +100,12 @@ struct D3DInteropTexture
     GLsizei mipmapLevels{0};
 };
 
-static D3DInteropTexture createD3DInteropTexture(const D3DInteropTextureCreateInfo& createInfo, const Direct3DContext& context);
-static bool destroyD3DInteropTexture(D3DInteropTexture& interopTexture, const Direct3DContext& context);
+D3DInteropTexture createD3DInteropTexture(const D3DInteropTextureCreateInfo& createInfo, const Direct3DContext& context);
+D3DInteropTexture openD3DInteropTexture(HANDLE dxSharedResourceHandle, const Direct3DContext& context);
+bool destroyD3DInteropTexture(D3DInteropTexture& interopTexture, const Direct3DContext& context);
+void interopLock(D3DInteropTexture& interopTexture, const Direct3DContext& context);
+void interopUnlock(D3DInteropTexture& interopTexture, const Direct3DContext& context);
 
-static void interopLock(D3DInteropTexture& interopTexture, const Direct3DContext& context);
-static void interopUnlock(D3DInteropTexture& interopTexture, const Direct3DContext& context);
 
 } // namespace d3dinterop
 } // namespace glh

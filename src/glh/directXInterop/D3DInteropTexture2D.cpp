@@ -239,8 +239,7 @@ void D3DInteropTexture2D::createSharedTexture()
 namespace glh {
 namespace d3dinterop {
 
-static D3DInteropTexture
-    createD3DInteropTexture(const D3DInteropTextureCreateInfo& createInfo, const Direct3DContext& context)
+D3DInteropTexture createD3DInteropTexture(const D3DInteropTextureCreateInfo& createInfo, const Direct3DContext& context)
 {
     D3DInteropTexture interopTexture;
     interopTexture.width = createInfo.width;
@@ -358,17 +357,62 @@ static D3DInteropTexture
     return interopTexture;
 }
 
-static bool destroyD3DInteropTexture(D3DInteropTexture& interopTexture, const Direct3DContext& context)
+D3DInteropTexture openD3DInteropTexture(HANDLE dxSharedResourceHandle, const Direct3DContext& context)
+{
+    D3DInteropTexture interopTexture;
+    interopTexture.hDxTextureSharedResource = dxSharedResourceHandle;
+
+    if (interopTexture.hDxTextureSharedResource != NULL) {
+        HRESULT hr = context.d3dDevice1->OpenSharedResource1(
+            interopTexture.hDxTextureSharedResource,
+            __uuidof(ID3D11Texture2D),
+            reinterpret_cast<void**>(&interopTexture.d3dTexture));
+        if (hr != S_OK) {
+            std::cout << "Failed to open imported texture" << std::endl;
+        }
+
+        // Associate the D3DTexture with the generated resource handle
+        if (!wglDXSetResourceShareHandleNV(interopTexture.d3dTexture, interopTexture.hDxTextureSharedResource)) {
+            std::cerr << "ERROR createSharedTexture() wglDXSetResourceShareHandleNV() failed!" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        // Make the OpenGL Texture
+        glGenTextures(1, &interopTexture.openGLTextureName);
+
+        // This lock synchronizes control of the texture between D3D and OpenGL
+        // You *must* lock and unlock this resource when using the texture in OpenGL for any operation.
+        // TBD for DirectX operations.
+        interopTexture.hWglSharedTextureLock = wglDXRegisterObjectNV(
+            context.hWglD3DDevice,            // hDevice  |
+            interopTexture.d3dTexture,        // dxObject |
+            interopTexture.openGLTextureName, // name     |
+            GL_TEXTURE_2D,                    // type     |
+            WGL_ACCESS_READ_WRITE_NV          // access   |
+        );
+        if (interopTexture.hWglSharedTextureLock == NULL) {
+            std::cerr << "wglDXRegisterObjectNV failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        glhTextureParameteri(interopTexture.openGLTextureName, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glhTextureParameteri(interopTexture.openGLTextureName, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+
+    return interopTexture;
+}
+
+bool destroyD3DInteropTexture(D3DInteropTexture& interopTexture, const Direct3DContext& context)
 {
     return true;
 }
 
-static void interopLock(D3DInteropTexture& interopTexture, const Direct3DContext& context)
+void interopLock(D3DInteropTexture& interopTexture, const Direct3DContext& context)
 {
     wglDXLockObjectsNV(context.hWglD3DDevice, 1, &interopTexture.hWglSharedTextureLock);
 }
 
-static void interopUnlock(D3DInteropTexture& interopTexture, const Direct3DContext& context)
+void interopUnlock(D3DInteropTexture& interopTexture, const Direct3DContext& context)
 {
     wglDXUnlockObjectsNV(context.hWglD3DDevice, 1, &interopTexture.hWglSharedTextureLock);
 }
