@@ -16,6 +16,10 @@
 #include <string>
 #include <functional>
 
+namespace OpenGLApp {
+    // TODO:: Functional
+}
+
 //------------------------------------------------------
 // class: OpenGLApplication
 // description: A small framework for managing a multithreaded
