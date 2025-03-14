@@ -40,11 +40,16 @@ target_include_directories(
 
 ## External project linkage would go here
 add_subdirectory("external/glfw")
+add_subdirectory("external/imgui")
 
 # ------------- PROJECT EXECUTABLE -------------
 add_executable(${TARGET_NAME} src/main/main.cpp)
 target_link_libraries(${TARGET_NAME} PRIVATE ${TARGET_NAME}_lib)
-target_link_libraries(${TARGET_NAME} PRIVATE glfw)
+target_link_libraries(
+    ${TARGET_NAME} 
+    PRIVATE glfw
+    PRIVATE imgui
+)
 
 # ------------------ TESTING ------------------
 # Add Google Test
