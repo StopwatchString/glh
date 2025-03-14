@@ -1,0 +1,6 @@
+# Build artefacts
+build/
+
+# Docs
+docs/html/
+docs/latex/
