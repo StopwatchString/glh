@@ -48,10 +48,10 @@ set_property(TARGET imgui PROPERTY FOLDER "external/imgui")
 
 
 # ------------- PROJECT EXECUTABLE -------------
-add_executable(${TARGET_NAME} src/main/main.cpp)
-target_link_libraries(${TARGET_NAME} PRIVATE ${TARGET_NAME}_lib)
+add_executable(${TARGET_NAME}_example examples/example_1.cpp)
+target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
 target_link_libraries(
-    ${TARGET_NAME} 
+    ${TARGET_NAME}_example
     PRIVATE glfw
     PRIVATE imgui
 )
@@ -85,11 +85,11 @@ gtest_discover_tests(${TARGET_NAME}_tests)
 # --------------- MSVC Settings ---------------
 if (MSVC)
     # Set Visual Studio startup project as our main target (normally VS will default to BUILD_ALL)
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME})
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME}_example)
 
     # Enable Multiprocessor compile on targets
     target_compile_options(${TARGET_NAME}_lib PRIVATE /MP)
-    target_compile_options(${TARGET_NAME} PRIVATE /MP)
+    target_compile_options(${TARGET_NAME}_example PRIVATE /MP)
     target_compile_options(${TARGET_NAME}_tests PRIVATE /MP)
 
     # Provides folder tree in visual studio filters
