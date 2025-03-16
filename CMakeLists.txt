@@ -95,7 +95,16 @@ target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
 
 # ------------------ TESTING ------------------
 # Add Google Test
-add_subdirectory(external/googletest)
+include(FetchContent)
+
+# Fetch Google Test
+FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG release-1.12.1 # Use the latest stable release or a specific tag
+)
+FetchContent_MakeAvailable(googletest)
+
 set_property(TARGET gmock      PROPERTY FOLDER "external/googletest")
 set_property(TARGET gmock_main PROPERTY FOLDER "external/googletest")
 set_property(TARGET gtest      PROPERTY FOLDER "external/googletest")
