@@ -46,6 +46,9 @@ set_property(TARGET update_mappings PROPERTY FOLDER "external/glfw")
 add_subdirectory("external/imgui")
 set_property(TARGET imgui PROPERTY FOLDER "external/imgui")
 
+add_subdirectory("external/glad")
+set_property(TARGET glad PROPERTY FOLDER "external/glad")
+
 
 # ------------- PROJECT EXECUTABLE -------------
 add_executable(${TARGET_NAME}_example examples/example_1.cpp)
@@ -54,6 +57,7 @@ target_link_libraries(
     ${TARGET_NAME}_example
     PRIVATE glfw
     PRIVATE imgui
+    PRIVATE glad
 )
 
 # ------------------ TESTING ------------------
