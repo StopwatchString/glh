@@ -12,19 +12,48 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # List all project source in these variables
 set(SOURCES
-${CMAKE_SOURCE_DIR}/src/glh/font.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/font.cpp
+
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Framebuffer.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/OpenGLApplication.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Program.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Shader.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Texture2D.cpp
+
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/directXInterop/D3DInteropTexture2D.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/directXInterop/direct3d_utils.cpp
 )
 set(PRIVATE_HEADERS
-${CMAKE_SOURCE_DIR}/src/glh/font.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/cpputils/windows/dwm.h
+${CMAKE_CURRENT_SOURCE_DIR}/src/cpputils/SharedLibraryLoader.h
 )
 set(PUBLIC_HEADERS
-${CMAKE_SOURCE_DIR}/include/glh/glh.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/glh.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/font.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/functionWrappers.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/macros.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/openglapi.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/utils.h
+
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Framebuffer.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/OpenGLApplication.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Program.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Shader.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Texture2D.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/SharedLibraryLoader.h
+
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/directXInterop/D3DInteropTexture2D.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/directXInterop/direct3d_utils.h
+
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/RFont/DejaVuSans.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/RFont/DroidSansJapanese.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/RFont/RFont.h
 )
 # List all GTest files here
 # Generally every hpp/cpp combo should have a matching [filename].test.cpp.
 # Header-only should also receive test files.
 set(TEST_SOURCES
-${CMAKE_SOURCE_DIR}/tests/glh/test.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/tests/glh/test.cpp
 )
 
 # -------------- PROJECT LIBRARY --------------
@@ -34,31 +63,35 @@ ${CMAKE_SOURCE_DIR}/tests/glh/test.cpp
 add_library(${TARGET_NAME}_lib ${SOURCES} ${PRIVATE_HEADERS} ${PUBLIC_HEADERS})
 target_include_directories(
     ${TARGET_NAME}_lib
-    PUBLIC  ${CMAKE_SOURCE_DIR}/include # All headers in /include should be public
-    PRIVATE ${CMAKE_SOURCE_DIR}/src     # All headers in /src should be private
+    PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include # All headers in /include should be public
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src     # All headers in /src should be private
 )
 
-## External project linkage would go here
+## External project linkage
 add_subdirectory("external/glfw")
 set_property(TARGET glfw            PROPERTY FOLDER "external/glfw")
 set_property(TARGET update_mappings PROPERTY FOLDER "external/glfw")
 
 add_subdirectory("external/imgui")
-set_property(TARGET imgui PROPERTY FOLDER "external/imgui")
+set_property(TARGET imgui           PROPERTY FOLDER "external/imgui")
+target_link_libraries(
+    imgui
+    PRIVATE glfw
+)
 
 add_subdirectory("external/glad")
-set_property(TARGET glad PROPERTY FOLDER "external/glad")
+set_property(TARGET glad            PROPERTY FOLDER "external/glad")
 
+target_link_libraries(
+    ${TARGET_NAME}_lib
+    PUBLIC glfw
+    PUBLIC imgui
+    PUBLIC  glad
+)
 
 # ------------- PROJECT EXECUTABLE -------------
 add_executable(${TARGET_NAME}_example examples/example_1.cpp)
 target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
-target_link_libraries(
-    ${TARGET_NAME}_example
-    PRIVATE glfw
-    PRIVATE imgui
-    PRIVATE glad
-)
 
 # ------------------ TESTING ------------------
 # Add Google Test
@@ -79,8 +112,8 @@ target_link_libraries(
 target_include_directories(
     ${TARGET_NAME}_tests
     # Explicitly access all headers, regardless of visibility from _lib
-    PRIVATE ${CMAKE_SOURCE_DIR}/include
-    PRIVATE ${CMAKE_SOURCE_DIR}/src
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 include(GoogleTest)
@@ -97,7 +130,7 @@ if (MSVC)
     target_compile_options(${TARGET_NAME}_tests PRIVATE /MP)
 
     # Provides folder tree in visual studio filters
-    source_group(TREE ${CMAKE_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SOURCES})
-    source_group(TREE ${CMAKE_SOURCE_DIR}/src PREFIX "Private Header Files" FILES ${PRIVATE_HEADERS})
-    source_group(TREE ${CMAKE_SOURCE_DIR}/include PREFIX "Public Header Files" FILES ${PUBLIC_HEADERS})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SOURCES})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Private Header Files" FILES ${PRIVATE_HEADERS})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "Public Header Files" FILES ${PUBLIC_HEADERS})
 endif()
