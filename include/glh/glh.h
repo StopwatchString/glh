@@ -1,7 +1,7 @@
 #ifndef GLH_H
 #define GLH_H
 
-#include "openglapi.h"
+#include "glh/openglapi.h"
 
 // Top level
 #include "glh/functionWrappers.h"
