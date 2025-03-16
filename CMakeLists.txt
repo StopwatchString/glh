@@ -4,18 +4,19 @@ cmake_minimum_required(VERSION 3.30)
 set(PROJECT_NAME "GLH Project")
 set(TARGET_NAME "glh")
 
+project(${PROJECT_NAME})
+
 # Options
 option(BUILD_GLH_TESTS "Enable building tests for GLH" ON)
 option(BUILD_GLH_EXAMPLES "Enable building examples for GLH" ON)
 
 # Folder Structure for VS
 if (PROJECT_IS_TOP_LEVEL)
-    set(FOLDER_TARGET "external/")
+    set(FOLDER_TARGET "")
 else()
-    set(FOLDER_TARGET "${TARGET_NAME}/external/")
+    set(FOLDER_TARGET "${TARGET_NAME}/")
 endif()
 
-project(${PROJECT_NAME})
 
 # Environment settings
 set(CMAKE_CXX_STANDARD 20)
@@ -77,21 +78,22 @@ target_include_directories(
     PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include # All headers in /include should be public
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src     # All headers in /src should be private
 )
+set_property(TARGET ${TARGET_NAME}_lib PROPERTY FOLDER "${FOLDER_TARGET}")
 
 ## External project linkage
 add_subdirectory("external/glfw")
-set_property(TARGET glfw            PROPERTY FOLDER "${FOLDER_TARGET}glfw")
-set_property(TARGET update_mappings PROPERTY FOLDER "${FOLDER_TARGET}glfw")
+set_property(TARGET glfw            PROPERTY FOLDER "${FOLDER_TARGET}external/glfw")
+set_property(TARGET update_mappings PROPERTY FOLDER "${FOLDER_TARGET}external/glfw")
 
 add_subdirectory("external/imgui")
-set_property(TARGET imgui           PROPERTY FOLDER "${FOLDER_TARGET}imgui")
+set_property(TARGET imgui           PROPERTY FOLDER "${FOLDER_TARGET}external/imgui")
 target_link_libraries(
     imgui
     PRIVATE glfw
 )
 
 add_subdirectory("external/glad")
-set_property(TARGET glad            PROPERTY FOLDER "${FOLDER_TARGET}glad")
+set_property(TARGET glad            PROPERTY FOLDER "${FOLDER_TARGET}external/glad")
 
 target_link_libraries(
     ${TARGET_NAME}_lib
@@ -104,6 +106,7 @@ target_link_libraries(
 if (BUILD_GLH_EXAMPLES)
     add_executable(${TARGET_NAME}_example examples/example_1.cpp)
     target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
+    set_property(TARGET ${TARGET_NAME}_example PROPERTY FOLDER "${FOLDER_TARGET}")
 endif()
 
 # ------------------ TESTING ------------------
@@ -138,6 +141,7 @@ If (BUILD_GLH_TESTS)
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
+    set_property(TARGET ${TARGET_NAME}_tests PROPERTY FOLDER "${FOLDER_TARGET}")
 
     include(GoogleTest)
     gtest_discover_tests(${TARGET_NAME}_tests)
@@ -150,7 +154,6 @@ if (MSVC)
 
     if (BUILD_GLH_EXAMPLES)
         # Set Visual Studio startup project as our main target (normally VS will default to BUILD_ALL)
-        set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME}_example)
         target_compile_options(${TARGET_NAME}_example PRIVATE /MP)
     endif()
 
