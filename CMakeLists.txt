@@ -4,6 +4,17 @@ cmake_minimum_required(VERSION 3.30)
 set(PROJECT_NAME "GLH Project")
 set(TARGET_NAME "glh")
 
+# Options
+option(BUILD_GLH_TESTS "Enable building tests for GLH" ON)
+option(BUILD_GLH_EXAMPLES "Enable building examples for GLH" ON)
+
+# Folder Structure for VS
+if (PROJECT_IS_TOP_LEVEL)
+    set(FOLDER_TARGET "external/")
+else()
+    set(FOLDER_TARGET "${TARGET_NAME}/external/")
+endif()
+
 project(${PROJECT_NAME})
 
 # Environment settings
@@ -69,18 +80,18 @@ target_include_directories(
 
 ## External project linkage
 add_subdirectory("external/glfw")
-set_property(TARGET glfw            PROPERTY FOLDER "external/glfw")
-set_property(TARGET update_mappings PROPERTY FOLDER "external/glfw")
+set_property(TARGET glfw            PROPERTY FOLDER "${FOLDER_TARGET}glfw")
+set_property(TARGET update_mappings PROPERTY FOLDER "${FOLDER_TARGET}glfw")
 
 add_subdirectory("external/imgui")
-set_property(TARGET imgui           PROPERTY FOLDER "external/imgui")
+set_property(TARGET imgui           PROPERTY FOLDER "${FOLDER_TARGET}imgui")
 target_link_libraries(
     imgui
     PRIVATE glfw
 )
 
 add_subdirectory("external/glad")
-set_property(TARGET glad            PROPERTY FOLDER "external/glad")
+set_property(TARGET glad            PROPERTY FOLDER "${FOLDER_TARGET}glad")
 
 target_link_libraries(
     ${TARGET_NAME}_lib
@@ -89,54 +100,63 @@ target_link_libraries(
     PUBLIC  glad
 )
 
-# ------------- PROJECT EXECUTABLE -------------
-add_executable(${TARGET_NAME}_example examples/example_1.cpp)
-target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
+# ------------------ EXAMPLES -----------------
+if (BUILD_GLH_EXAMPLES)
+    add_executable(${TARGET_NAME}_example examples/example_1.cpp)
+    target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
+endif()
 
 # ------------------ TESTING ------------------
-# Add Google Test
-include(FetchContent)
+If (BUILD_GLH_TESTS)
+    # Add Google Test
+    include(FetchContent)
 
-# Fetch Google Test
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.12.1 # Use the latest stable release or a specific tag
-)
-FetchContent_MakeAvailable(googletest)
+    # Fetch Google Test
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.12.1 # Use the latest stable release or a specific tag
+    )
+    FetchContent_MakeAvailable(googletest)
 
-set_property(TARGET gmock      PROPERTY FOLDER "external/googletest")
-set_property(TARGET gmock_main PROPERTY FOLDER "external/googletest")
-set_property(TARGET gtest      PROPERTY FOLDER "external/googletest")
-set_property(TARGET gtest_main PROPERTY FOLDER "external/googletest")
+    set_property(TARGET gmock      PROPERTY FOLDER "external/googletest")
+    set_property(TARGET gmock_main PROPERTY FOLDER "external/googletest")
+    set_property(TARGET gtest      PROPERTY FOLDER "external/googletest")
+    set_property(TARGET gtest_main PROPERTY FOLDER "external/googletest")
 
-enable_testing()
+    enable_testing()
 
-add_executable(${TARGET_NAME}_tests ${TEST_SOURCES})
-target_link_libraries(
-    ${TARGET_NAME}_tests
-    PRIVATE GTest::gtest_main
-    PRIVATE ${TARGET_NAME}_lib
-)
-target_include_directories(
-    ${TARGET_NAME}_tests
-    # Explicitly access all headers, regardless of visibility from _lib
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
+    add_executable(${TARGET_NAME}_tests ${TEST_SOURCES})
+    target_link_libraries(
+        ${TARGET_NAME}_tests
+        PRIVATE GTest::gtest_main
+        PRIVATE ${TARGET_NAME}_lib
+    )
+    target_include_directories(
+        ${TARGET_NAME}_tests
+        # Explicitly access all headers, regardless of visibility from _lib
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
 
-include(GoogleTest)
-gtest_discover_tests(${TARGET_NAME}_tests)
+    include(GoogleTest)
+    gtest_discover_tests(${TARGET_NAME}_tests)
+endif()
 
 # --------------- MSVC Settings ---------------
 if (MSVC)
-    # Set Visual Studio startup project as our main target (normally VS will default to BUILD_ALL)
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME}_example)
-
-    # Enable Multiprocessor compile on targets
+    # Enable Multiprocessor compile 
     target_compile_options(${TARGET_NAME}_lib PRIVATE /MP)
-    target_compile_options(${TARGET_NAME}_example PRIVATE /MP)
-    target_compile_options(${TARGET_NAME}_tests PRIVATE /MP)
+
+    if (BUILD_GLH_EXAMPLES)
+        # Set Visual Studio startup project as our main target (normally VS will default to BUILD_ALL)
+        set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME}_example)
+        target_compile_options(${TARGET_NAME}_example PRIVATE /MP)
+    endif()
+
+    if (BUILD_GLH_TESTS)
+        target_compile_options(${TARGET_NAME}_tests PRIVATE /MP)
+    endif()
 
     # Provides folder tree in visual studio filters
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SOURCES})
