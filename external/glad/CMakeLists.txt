@@ -4,6 +4,7 @@ if (WIN32)
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/include/glad/gl.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/glad/wgl.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/KHR/khrplatform.h
     )
 
     set(SOURCES
@@ -14,6 +15,7 @@ elseif(UNIX)
     set(HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/include/glad/gl.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/glad/glx.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/KHR/khrplatform.h
     )
 
     set(SOURCES

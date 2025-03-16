@@ -27,3 +27,12 @@ target_include_directories(
     imgui
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+if (MSVC)
+    # Enable Multiprocessor compile on target
+    target_compile_options(imgui PRIVATE /MP)
+
+    # Provides folder tree in visual studio filters
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "Headers" FILES ${HEADERS})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Sources" FILES ${SOURCES})
+endif()
