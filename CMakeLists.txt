@@ -24,7 +24,7 @@ ${CMAKE_SOURCE_DIR}/include/glh/glh.h
 # Generally every hpp/cpp combo should have a matching [filename].test.cpp.
 # Header-only should also receive test files.
 set(TEST_SOURCES
-${CMAKE_SOURCE_DIR}/src/test.cpp
+${CMAKE_SOURCE_DIR}/tests/glh/test.cpp
 )
 
 # -------------- PROJECT LIBRARY --------------
@@ -40,7 +40,12 @@ target_include_directories(
 
 ## External project linkage would go here
 add_subdirectory("external/glfw")
+set_property(TARGET glfw            PROPERTY FOLDER "external/glfw")
+set_property(TARGET update_mappings PROPERTY FOLDER "external/glfw")
+
 add_subdirectory("external/imgui")
+set_property(TARGET imgui PROPERTY FOLDER "external/imgui")
+
 
 # ------------- PROJECT EXECUTABLE -------------
 add_executable(${TARGET_NAME} src/main/main.cpp)
@@ -53,9 +58,11 @@ target_link_libraries(
 
 # ------------------ TESTING ------------------
 # Add Google Test
-set(CMAKE_FOLDER "external/GoogleTest")
 add_subdirectory(external/googletest)
-set(CMAKE_FOLDER "")
+set_property(TARGET gmock      PROPERTY FOLDER "external/googletest")
+set_property(TARGET gmock_main PROPERTY FOLDER "external/googletest")
+set_property(TARGET gtest      PROPERTY FOLDER "external/googletest")
+set_property(TARGET gtest_main PROPERTY FOLDER "external/googletest")
 
 enable_testing()
 
