@@ -7,8 +7,8 @@ set(TARGET_NAME "glh")
 project(${PROJECT_NAME})
 
 # Options
-option(BUILD_GLH_TESTS "Enable building tests for GLH" ON)
-option(BUILD_GLH_EXAMPLES "Enable building examples for GLH" ON)
+option(${TARGET_NAME}_BUILD_TESTS "Enable building tests for ${TARGET_NAME}" OFF)
+option(${TARGET_NAME}_BUILD_EXAMPLES "Enable building examples for ${TARGET_NAME}" OFF)
 
 # Folder Structure for VS
 if (PROJECT_IS_TOP_LEVEL)
@@ -17,6 +17,15 @@ else()
     set(FOLDER_TARGET "${TARGET_NAME}/")
 endif()
 
+# ------ DEFAULT OPTIONS FOR SUBPROJECTS ------
+# GLFW
+option(GLFW_BUILD_DOCS              OFF)
+option(GLFW_BUILD_EXAMPLES          OFF)
+option(GLFW_BUILD_TESTS             OFF)
+option(GLFW_BUILD_WIN32              ON)
+option(GLFW_INSTALL                 OFF)
+option(GLFW_USE_HYBRID_HPG          OFF)
+option(USE_MSVC_RUNTIME_LIBRARY_DLL  ON)
 
 # Environment settings
 set(CMAKE_CXX_STANDARD 20)
@@ -103,14 +112,14 @@ target_link_libraries(
 )
 
 # ------------------ EXAMPLES -----------------
-if (BUILD_GLH_EXAMPLES)
+if (${TARGET_NAME}_BUILD_EXAMPLES)
     add_executable(${TARGET_NAME}_example examples/example_1.cpp)
     target_link_libraries(${TARGET_NAME}_example PRIVATE ${TARGET_NAME}_lib)
     set_property(TARGET ${TARGET_NAME}_example PROPERTY FOLDER "${FOLDER_TARGET}")
 endif()
 
 # ------------------ TESTING ------------------
-If (BUILD_GLH_TESTS)
+If (${TARGET_NAME}_BUILD_TESTS)
     # Add Google Test
     include(FetchContent)
 
@@ -152,12 +161,12 @@ if (MSVC)
     # Enable Multiprocessor compile 
     target_compile_options(${TARGET_NAME}_lib PRIVATE /MP)
 
-    if (BUILD_GLH_EXAMPLES)
+    if (${TARGET_NAME}_BUILD_EXAMPLES)
         # Set Visual Studio startup project as our main target (normally VS will default to BUILD_ALL)
         target_compile_options(${TARGET_NAME}_example PRIVATE /MP)
     endif()
 
-    if (BUILD_GLH_TESTS)
+    if (${TARGET_NAME}_BUILD_TESTS)
         target_compile_options(${TARGET_NAME}_tests PRIVATE /MP)
     endif()
 
@@ -165,4 +174,5 @@ if (MSVC)
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SOURCES})
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src PREFIX "Private Header Files" FILES ${PRIVATE_HEADERS})
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "Public Header Files" FILES ${PUBLIC_HEADERS})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/tests PREFIX "Tests" FILES ${TEST_SOURCES})
 endif()
