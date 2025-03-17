@@ -131,10 +131,10 @@ If (${TARGET_NAME}_BUILD_TESTS)
     )
     FetchContent_MakeAvailable(googletest)
 
-    set_property(TARGET gmock      PROPERTY FOLDER "external/googletest")
-    set_property(TARGET gmock_main PROPERTY FOLDER "external/googletest")
-    set_property(TARGET gtest      PROPERTY FOLDER "external/googletest")
-    set_property(TARGET gtest_main PROPERTY FOLDER "external/googletest")
+    set_property(TARGET gmock      PROPERTY FOLDER "${FOLDER_TARGET}external/googletest")
+    set_property(TARGET gmock_main PROPERTY FOLDER "${FOLDER_TARGET}external/googletest")
+    set_property(TARGET gtest      PROPERTY FOLDER "${FOLDER_TARGET}external/googletest")
+    set_property(TARGET gtest_main PROPERTY FOLDER "${FOLDER_TARGET}external/googletest")
 
     enable_testing()
 
