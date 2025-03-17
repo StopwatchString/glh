@@ -127,7 +127,7 @@ If (${TARGET_NAME}_BUILD_TESTS)
     FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.12.1 # Use the latest stable release or a specific tag
+        GIT_TAG main
     )
     FetchContent_MakeAvailable(googletest)
 
