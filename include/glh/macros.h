@@ -4,7 +4,6 @@
 #ifndef NDEBUG
     #include <iostream>
 
-    // clang-format off
     #define GL_ERROR_CHECK(glFuncName)                                                                                                                       \
         do {                                                                                                                                                 \
             GLenum errorCode = glGetError();                                                                                                                 \
@@ -53,7 +52,6 @@
                 }                                                                                                                                            \
             }                                                                                                                                                \
         } while (0)
-    // clang-format on
 
 #else
 

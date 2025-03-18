@@ -23,42 +23,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # List all project source in these variables
 set(SOURCES
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/font.cpp
-
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Framebuffer.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/OpenGLApplication.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Program.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Shader.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/classes/Texture2D.cpp
-
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/directXInterop/D3DInteropTexture2D.cpp
-${CMAKE_CURRENT_SOURCE_DIR}/src/glh/directXInterop/direct3d_utils.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/OpenGLApplication.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/direct3d_utils.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/D3DInteropTexture2D.cpp
 )
 set(PRIVATE_HEADERS
-${CMAKE_CURRENT_SOURCE_DIR}/src/cpputils/windows/dwm.h
-${CMAKE_CURRENT_SOURCE_DIR}/src/cpputils/SharedLibraryLoader.h
 )
 set(PUBLIC_HEADERS
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/glh.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/font.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/D3DInteropTexture2D.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/direct3d_utils.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/functionWrappers.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/glh.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/macros.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/openglapi.h
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/OpenGLApplication.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/utils.h
 
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Framebuffer.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/OpenGLApplication.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Program.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Shader.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/Texture2D.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/classes/SharedLibraryLoader.h
-
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/directXInterop/D3DInteropTexture2D.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/directXInterop/direct3d_utils.h
-
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/RFont/DejaVuSans.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/RFont/DroidSansJapanese.h
-${CMAKE_CURRENT_SOURCE_DIR}/include/glh/RFont/RFont.h
 )
 # List all GTest files here
 # Generally every hpp/cpp combo should have a matching [filename].test.cpp.
@@ -94,11 +74,14 @@ target_link_libraries(
 add_subdirectory("external/glad")
 set_property(TARGET glad            PROPERTY FOLDER "${FOLDER_TARGET}external/glad")
 
+add_subdirectory("external/cpputils")
+
 target_link_libraries(
     ${TARGET_NAME}_lib
     PUBLIC glfw
     PUBLIC imgui
-    PUBLIC  glad
+    PUBLIC glad
+    PRIVATE cpputils_lib
 )
 
 # ------------------ EXAMPLES -----------------

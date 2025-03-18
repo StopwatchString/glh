@@ -6,15 +6,10 @@
 // Top level
 #include "glh/functionWrappers.h"
 #include "glh/utils.h"
-#include "glh/font.h"
-
-// Classes
-#include "glh/classes/Texture2D.h"
-#include "glh/classes/Framebuffer.h"
 
 // DirectX Interop
-#include "glh/directXInterop/direct3d_utils.h"
-#include "glh/directXInterop/D3DInteropTexture2D.h"
+#include "glh/direct3d_utils.h"
+#include "glh/D3DInteropTexture2D.h"
 
 //-----------------------------------------------
 // glhLoadExtensions()
