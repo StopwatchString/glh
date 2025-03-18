@@ -17,16 +17,6 @@ else()
     set(FOLDER_TARGET "${TARGET_NAME}/")
 endif()
 
-# ------ DEFAULT OPTIONS FOR SUBPROJECTS ------
-# GLFW
-option(GLFW_BUILD_DOCS              OFF)
-option(GLFW_BUILD_EXAMPLES          OFF)
-option(GLFW_BUILD_TESTS             OFF)
-option(GLFW_BUILD_WIN32              ON)
-option(GLFW_INSTALL                 OFF)
-option(GLFW_USE_HYBRID_HPG          OFF)
-option(USE_MSVC_RUNTIME_LIBRARY_DLL  ON)
-
 # Environment settings
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
