@@ -14,7 +14,7 @@ option(${TARGET_NAME}_BUILD_EXAMPLES "Enable building examples for ${TARGET_NAME
 if (PROJECT_IS_TOP_LEVEL)
     set(FOLDER_TARGET "")
 else()
-    set(FOLDER_TARGET "${TARGET_NAME}/")
+    set(FOLDER_TARGET "external/${TARGET_NAME}/")
 endif()
 
 # Environment settings
