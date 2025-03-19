@@ -1,6 +1,6 @@
 #include "glh/direct3d_utils.h"
 
-#include "cpputils/SharedLibraryLoader.h"
+#include "utils/SharedLibraryLoader.h"
 
 #include "glh/openglapi.h"
 

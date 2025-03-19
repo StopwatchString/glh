@@ -3,7 +3,7 @@
 #include <exception>
 #include <iostream>
 
-#include "cpputils/windows/dwm.h"
+#include "utils/windows/dwm.h"
 
 //-----------------------------------------------
 // static defaultKeyCallback()

@@ -11,9 +11,6 @@
             // glh
             "glh_BUILD_EXAMPLES":           "ON",
             "glh_BUILD_TESTS":              "ON",
-            // cpputils
-            "cpputils_BUILD_EXAMPLES":      "OFF",
-            "cpputils_BUILD_TESTS":         "OFF",
             // GoogleTest
             "GTEST_HAS_ABSL":               "OFF",
             "BUILD_GMOCK":                  "ON",
