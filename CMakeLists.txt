@@ -81,12 +81,16 @@ set_property(TARGET glad            PROPERTY FOLDER "${FOLDER_TARGET}external/gl
 add_subdirectory("external/glm")
 set_property(TARGET glm             PROPERTY FOLDER "${FOLDER_TARGET}external/glm")
 
+add_subdirectory("external/stb_truetype")
+set_property(TARGET stb_truetype    PROPERTY FOLDER "${FOLDER_TARGET}external/stb_truetype")
+
 target_link_libraries(
     ${TARGET_NAME}_lib
     PUBLIC glfw
     PUBLIC imgui
     PUBLIC glad
     PUBLIC glm
+    PUBLIC stb_truetype
 )
 
 # ------------------ EXAMPLES -----------------
