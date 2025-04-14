@@ -5,9 +5,9 @@ var NAVTREEINDEX0 =
 "OpenGLApplication_8h_source.html":[1,0,0,0,6],
 "SharedLibraryLoader_8h_source.html":[1,0,1,1,1],
 "annotated.html":[0,0],
-"classOpenGLApplication.html":[0,0,3],
 "classcpputils_1_1SharedLibraryLoader.html":[0,0,0,0],
 "classes.html":[0,1],
+"classglh_1_1OpenGLApplication.html":[0,0,1,1],
 "dir_02763dbaf8795575c3e6104f3261f85d.html":[1,0,1,1,0],
 "dir_1b2a221d9b3ab5f1b17fe330e7806573.html":[1,0,0,0],
 "dir_313caf1132e152dd9b58bea13a4052ca.html":[1,0,1,1],
@@ -23,9 +23,10 @@ var NAVTREEINDEX0 =
 "macros_8h_source.html":[1,0,0,0,4],
 "openglapi_8h_source.html":[1,0,0,0,5],
 "pages.html":[],
+"shader__utils_8h_source.html":[1,0,0,0,7],
 "structDirect3DContext.html":[0,0,2],
-"structOpenGLApplication_1_1ApplicationConfig.html":[0,0,3,0],
+"structglh_1_1OpenGLApplication_1_1ApplicationConfig.html":[0,0,1,1,0],
 "structglh_1_1d3dinterop_1_1D3DInteropTexture.html":[0,0,1,0,0],
 "structglh_1_1d3dinterop_1_1D3DInteropTextureCreateInfo.html":[0,0,1,0,1],
-"utils_8h_source.html":[1,0,0,0,7]
+"utils_8h_source.html":[1,0,0,0,8]
 };

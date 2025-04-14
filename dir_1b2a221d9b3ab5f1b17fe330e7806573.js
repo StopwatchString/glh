@@ -7,5 +7,6 @@ var dir_1b2a221d9b3ab5f1b17fe330e7806573 =
     [ "macros.h", "macros_8h_source.html", null ],
     [ "openglapi.h", "openglapi_8h_source.html", null ],
     [ "OpenGLApplication.h", "OpenGLApplication_8h_source.html", null ],
+    [ "shader_utils.h", "shader__utils_8h_source.html", null ],
     [ "utils.h", "utils_8h_source.html", null ]
 ];

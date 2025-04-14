@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['openglapplication_0',['OpenGLApplication',['../classOpenGLApplication.html',1,'']]]
+  ['openglapplication_0',['OpenGLApplication',['../classglh_1_1OpenGLApplication.html',1,'glh']]]
 ];
