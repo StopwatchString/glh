@@ -43,6 +43,13 @@ static GLenum glhCheckNamedFramebufferStatus(GLuint framebuffer, GLenum target)
 }
 
 // Vertex Array Object
+static void glhGenVertexArrays(GLsizei n, GLuint* arrays)
+{
+    GL_ERROR_CHECK("Before glGenVertexArrays()");
+    glGenVertexArrays(n, arrays);
+    GL_ERROR_CHECK("After glGenVertexArrays()");
+}
+
 static void glhBindVertexArray(GLuint array)
 {
     GL_ERROR_CHECK("Before glBindVertexArray()");
@@ -50,12 +57,54 @@ static void glhBindVertexArray(GLuint array)
     GL_ERROR_CHECK("glBindVertexArray()");
 }
 
+static void glhVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer)
+{
+    GL_ERROR_CHECK("Before glVertexAttribPointer()");
+    glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+    GL_ERROR_CHECK("After glVertexAttribPointer()");
+}
+
+static void glhEnableVertexAttribArray(GLuint index)
+{
+    GL_ERROR_CHECK("Before glEnableVertexAttribArray()");
+    glEnableVertexAttribArray(index);
+    GL_ERROR_CHECK("After glEnableVertexAttribArray()");
+}
+
+static void glhDisableVertexAttribArray(GLuint index)
+{
+    GL_ERROR_CHECK("Before glDisableVertexAttribArray()");
+    glDisableVertexAttribArray(index);
+    GL_ERROR_CHECK("After glDisableVertexAttribArray()");
+}
+
 // Buffer Objects
+static void glhGenBuffers(GLsizei n, GLuint* buffers)
+{
+    GL_ERROR_CHECK("Before glGenBuffers()");
+    glGenBuffers(n, buffers);
+    GL_ERROR_CHECK("After glGenBuffers()");
+}
+
 static void glhBindBuffer(GLenum target, GLuint buffer)
 {
     GL_ERROR_CHECK("Before glBindBuffer()");
     glBindBuffer(target, buffer);
     GL_ERROR_CHECK("glBindBuffer()");
+}
+
+static void glhBufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage)
+{
+    GL_ERROR_CHECK("Before glBufferData()");
+    glBufferData(target, size, data, usage);
+    GL_ERROR_CHECK("After glBufferData()");
+}
+
+static void glhBindBufferBase(GLenum target, GLuint index, GLuint buffer)
+{
+    GL_ERROR_CHECK("Before glBindBufferBase()");
+    glBindBufferBase(target, index, buffer);
+    GL_ERROR_CHECK("After glBindBufferBase()");
 }
 
 // Textures
@@ -124,6 +173,14 @@ static void glhActiveTexture(GLenum texture)
     GL_ERROR_CHECK("glActiveTexture()");
 }
 
+// Draw
+static void glhDrawElements(GLenum mode, GLsizei count, GLenum type, const void* indices)
+{
+    GL_ERROR_CHECK("Before glhDrawElements()");
+    glDrawElements(mode, count, type, indices);
+    GL_ERROR_CHECK("After glhDrawElements()");
+}
+
 // Clearing
 static void glhClear(GLenum clearTarget)
 {
@@ -183,12 +240,54 @@ static void glhGetShaderInfoLog(GLenum shader, GLsizei bufsize, GLsizei* length,
     GL_ERROR_CHECK("glGetShaderInfoLog()");
 }
 
+static void glhAttachShader(GLuint program, GLuint shader)
+{
+    GL_ERROR_CHECK("Before glAttachShader()");
+    glAttachShader(program, shader);
+    GL_ERROR_CHECK("After glAttachShader()");
+}
+
 // Program
+static GLint glhCreateProgram()
+{
+    GLint program = 0;
+    GL_ERROR_CHECK("Before glCreateProgram()");
+    program = glCreateProgram();
+    GL_ERROR_CHECK("After glCreateProgram()");
+    return program;
+}
+
+static void glhDeleteProgram(GLuint program)
+{
+    GL_ERROR_CHECK("Before glDeleteProgram()");
+    glDeleteProgram(program);
+    GL_ERROR_CHECK("After glDeleteProgram()");
+}
+
 static void glhUseProgram(GLuint program)
 {
     GL_ERROR_CHECK("Before glUseProgram()");
     glUseProgram(program);
     GL_ERROR_CHECK("glUseProgram()");
+}
+
+static void glhLinkProgram(GLuint program)
+{
+    GL_ERROR_CHECK("Before glLinkProgram()");
+    glLinkProgram(program);
+    GL_ERROR_CHECK("After glLinkProgram()");
+}
+
+static void glhGetProgramiv(GLuint program, GLenum pname, GLint* params)
+{
+    GL_ERROR_CHECK("Before glGetProgramiv()");
+    glGetProgramiv(program, pname, params);
+    GL_ERROR_CHECK("After glGetProgramiv()");
+}
+
+static void glhGetProgramInfoLog(GLuint program, GLsizei bufSize, GLsizei* length, GLchar* infoLog)
+{
+    glGetProgramInfoLog(program, bufSize, length, infoLog);
 }
 
 // Blending

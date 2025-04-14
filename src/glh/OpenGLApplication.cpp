@@ -1,9 +1,10 @@
 #include "glh/OpenGLApplication.h"
 
+#include "glh/openglapi.h"
+#include "utils/windows/dwm.h"
+
 #include <exception>
 #include <iostream>
-
-#include "utils/windows/dwm.h"
 
 //-----------------------------------------------
 // static defaultKeyCallback()
@@ -11,9 +12,9 @@
 static void defaultKeyCallback(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
 {
     switch (key) {
-        case GLFW_KEY_ESCAPE:
-            if (action == GLFW_PRESS) { glfwSetWindowShouldClose(glfwWindow, GLFW_TRUE); }
-            break;
+    case GLFW_KEY_ESCAPE:
+        if (action == GLFW_PRESS) { glfwSetWindowShouldClose(glfwWindow, GLFW_TRUE); }
+        break;
     }
 }
 
@@ -36,7 +37,7 @@ static void defaultDrawFunc(GLFWwindow* window)
         input *= (newUpper - newLower); // Scale normalized value to new bound size
         input += newLower;              // Move scale to new lower bound
         return input;
-    };
+        };
 
     while (!glfwWindowShouldClose(window)) {
         float r = 0.0f;
@@ -49,6 +50,32 @@ static void defaultDrawFunc(GLFWwindow* window)
         glfwSwapBuffers(window);
     }
 }
+
+//-----------------------------------------------
+// static defaultMouseButtonCallback()
+//-----------------------------------------------
+static void defaultMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+
+}
+
+//-----------------------------------------------
+// static defaultCursorPosCallback()
+//-----------------------------------------------
+static void defaultCursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+
+}
+
+//-----------------------------------------------
+// static defaultScrollCallback()
+//-----------------------------------------------
+static void defaultScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+
+}
+
+namespace glh {
 
 //-----------------------------------------------
 // Constructor
@@ -107,6 +134,15 @@ void OpenGLApplication::initGLFW()
 
     GLFWkeyfun keyCallback = appConfig.customKeyCallback == nullptr ? defaultKeyCallback : appConfig.customKeyCallback;
     glfwSetKeyCallback(glfwWindow, keyCallback);
+
+    GLFWmousebuttonfun mouseCallback = appConfig.customMouseButtonCallback == nullptr ? defaultMouseButtonCallback : appConfig.customMouseButtonCallback;
+    glfwSetMouseButtonCallback(glfwWindow, mouseCallback);
+
+    GLFWscrollfun scrollCallback = appConfig.customScrollCallback == nullptr ? defaultScrollCallback : appConfig.customScrollCallback;
+    glfwSetScrollCallback(glfwWindow, scrollCallback);
+
+    GLFWcursorposfun cursorPosCallback = appConfig.customCursorPosCallback == nullptr ? defaultCursorPosCallback : appConfig.customCursorPosCallback;
+    glfwSetCursorPosCallback(glfwWindow, cursorPosCallback);
 
     if (appConfig.customDropCallback != nullptr) { glfwSetDropCallback(glfwWindow, appConfig.customDropCallback); }
 
@@ -175,6 +211,9 @@ void OpenGLApplication::renderFunc() const
         glfwMakeContextCurrent(glfwWindow);
         ImGui::SetCurrentContext(imguiContext);
 
+        int swapInterval = appConfig.vsyncEnable ? 1 : 0;
+        glfwSwapInterval(swapInterval);
+
         std::function<void(GLFWwindow*)> drawFunction
             = appConfig.customDrawFunc == nullptr ? defaultDrawFunc : appConfig.customDrawFunc;
         drawFunction(glfwWindow);
@@ -208,3 +247,5 @@ void OpenGLApplication::eventLoop()
         }
     }
 }
+
+} // End glh

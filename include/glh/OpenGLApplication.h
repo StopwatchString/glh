@@ -6,8 +6,6 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include "GLFW/glfw3native.h"
 
-#include "glh/glh.h"
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -16,16 +14,7 @@
 #include <string>
 #include <functional>
 
-namespace OpenGLApp {
-    // TODO:: Functional
-}
-
-//------------------------------------------------------
-// class: OpenGLApplication
-// description: A small framework for managing a multithreaded
-//              OpenGL window through GLFW with DearImgui
-//              built in and automatically initialized.
-//------------------------------------------------------
+namespace glh {
 
 class OpenGLApplication
 {
@@ -51,12 +40,44 @@ public:
         std::function<void(GLFWwindow*)> customDrawFunc = nullptr;
         // std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
         GLFWkeyfun customKeyCallback = nullptr;
+        // std::function<void(GLFWwindow* window, int button, int action, int mods)>
+        GLFWmousebuttonfun customMouseButtonCallback = nullptr;
+        // std::function<void(GLFWwindow* window, double xpos, double ypos)>
+        GLFWcursorposfun customCursorPosCallback = nullptr;
+        // std::function<void(GLFWwindow* window, double xoffset, double yoffset)>
+        GLFWscrollfun customScrollCallback = nullptr;
         // std::function<void(int error_code, const char* description)>
         GLFWerrorfun customErrorCallback = nullptr;
         // std::function<void(GLFWwindow* window, int count, const char** paths)>
         GLFWdropfun customDropCallback = nullptr;
         std::function<void()> customPollingFunc = nullptr;
     };
+
+    //glh::OpenGLApplication::ApplicationConfig config;
+    //config.windowName = "Dted Viewer";
+    //config.windowInitWidth = 0;
+    //config.windowInitHeight = 0;
+    //config.windowPosX = 0;
+    //config.windowPosY = 0;
+    //config.windowBorderless = false;
+    //config.windowResizeEnable = false;
+    //config.windowDarkmode = false;
+    //config.windowRounded = false;
+    //config.windowAlwaysOnTop = false;
+    //config.vsyncEnable = false;
+    //config.transparentFramebuffer = false;
+    //config.glVersionMajor = 4;
+    //config.glVersionMinor = 6;
+    //config.dearImguiGlslVersionString = "#version 460";
+    //config.imguiIniFileName = nullptr;
+    //config.customDrawFunc = nullptr;
+    //// std::function<void(GLFWwindow* window, int key, int scancode, int action, int mods)>
+    //config.customKeyCallback = nullptr;
+    //// std::function<void(int error_code, const char* description)>
+    //config.customErrorCallback = nullptr;
+    //// std::function<void(GLFWwindow* window, int count, const char** paths)>
+    //config.customDropCallback = nullptr;
+    //config.customPollingFunc = nullptr;
 
     OpenGLApplication(const ApplicationConfig& appConfig);
     ~OpenGLApplication();
@@ -77,5 +98,7 @@ private:
 
     std::thread renderThread;
 };
+
+} // End glh
 
 #endif
