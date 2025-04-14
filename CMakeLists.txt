@@ -26,6 +26,7 @@ set(SOURCES
 ${CMAKE_CURRENT_SOURCE_DIR}/src/glh/OpenGLApplication.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/src/glh/direct3d_utils.cpp
 ${CMAKE_CURRENT_SOURCE_DIR}/src/glh/D3DInteropTexture2D.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/src/glh/shader_utils.cpp
 )
 set(PRIVATE_HEADERS
 # Ports from cpputils
@@ -41,7 +42,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/macros.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/openglapi.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/OpenGLApplication.h
 ${CMAKE_CURRENT_SOURCE_DIR}/include/glh/utils.h
-
+${CMAKE_CURRENT_SOURCE_DIR}/include/glh/shader_utils.h
 )
 # List all GTest files here
 # Generally every hpp/cpp combo should have a matching [filename].test.cpp.
@@ -77,11 +78,15 @@ target_link_libraries(
 add_subdirectory("external/glad")
 set_property(TARGET glad            PROPERTY FOLDER "${FOLDER_TARGET}external/glad")
 
+add_subdirectory("external/glm")
+set_property(TARGET glm             PROPERTY FOLDER "${FOLDER_TARGET}external/glm")
+
 target_link_libraries(
     ${TARGET_NAME}_lib
     PUBLIC glfw
     PUBLIC imgui
     PUBLIC glad
+    PUBLIC glm
 )
 
 # ------------------ EXAMPLES -----------------
